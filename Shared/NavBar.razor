@@ -1,0 +1,92 @@
+﻿<header>
+    <div class="container-fluid justify-content-center border-bottom fixed-top bg-white" style="box-shadow: 0 1px 8px 0px #888888;">
+        <div class="container" style="max-width: 1100px">
+            <div class="row">
+                <div class="col">
+                    <a class="navbar-brand pb-0" asp-area="" asp-page="/Index">
+                        <img src="/images/bowl_logo_2.svg" width="60" height="60" />
+                        Menu Maker
+                    </a>
+                </div>
+            </div>
+
+            <nav class="row navbar navbar-expand-sm navbar-toggleable-sm navbar-light py-0">
+
+                <div class="col p-0">
+                    <div class="container p-0">
+
+                        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="@NavMenuCssClass d-sm-inline-flex flex-sm-row justify-content-between" @onclick="ToggleNavMenu">
+                            <div>
+                                <ul class="navbar-nav flex-grow-1 pt-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Recipes/AllRecipes">Recipes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/MealPlans/Index">Meal Plans</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Administration/AdminMain">TempAdmin</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <LoginDisplay/>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+
+
+@*<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">BlazorRecipeApp</a>
+
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
+    </ul>
+</div>*@
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
