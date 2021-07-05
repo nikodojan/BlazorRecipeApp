@@ -10,7 +10,10 @@ namespace BlazorRecipeApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
-        
+        public DbSet<GroceryCategory> GroceryCategories { get; set; }
+        public DbSet<Grocery> Groceries { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
