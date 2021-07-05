@@ -14,7 +14,7 @@ namespace BlazorRecipeApp.Models
         public int Id { get; set; }
 
         [Column(TypeName = "decimal(6, 2)")]
-        public decimal? Amount { get; set; }
+        public double? Amount { get; set; }
 
         [StringLength(10)]
         public string Unit { get; set; }
