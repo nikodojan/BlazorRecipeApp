@@ -12,7 +12,6 @@ namespace BlazorRecipeApp.Models
     {
         public Recipe()
         {
-            //Dishes = new List<Dish>();
             Ingredients = new List<Ingredient>();
         }
 

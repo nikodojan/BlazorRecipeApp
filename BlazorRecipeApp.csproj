@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Interfaces\" />
-    <Folder Include="Data\Services\" />
   </ItemGroup>
 
 </Project>

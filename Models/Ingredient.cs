@@ -13,7 +13,7 @@ namespace BlazorRecipeApp.Models
         [Key]
         public int Id { get; set; }
 
-        [Column(TypeName = "decimal(6, 2)")]
+        [Column(TypeName = "double(6, 2)")]
         public double? Amount { get; set; }
 
         [StringLength(10)]
