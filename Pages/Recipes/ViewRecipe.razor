@@ -1,0 +1,23 @@
+﻿@page "/recipes/{RecipeId:int}"
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<RecipeComponent Recipe="@Recipe"></RecipeComponent>
+
+@code {
+    [Parameter]
+    public int RecipeId { get; set; }
+
+    public Recipe Recipe { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Recipe = new Recipe();
+        using (ApplicationDbContext context = DbFactory.CreateDbContext())
+        {
+            Recipe recipe = new Recipe();
+            recipe = await context.Recipes.Include(r=>r.Ingredients)
+                .FirstAsync(r=>r.Id==RecipeId);
+            Recipe = recipe ?? new Recipe(){Id = 0, Title = "No recipe found"};
+        }
+    }
+}

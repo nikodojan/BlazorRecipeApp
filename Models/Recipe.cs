@@ -38,5 +38,10 @@ namespace BlazorRecipeApp.Models
 
         [InverseProperty(nameof(Ingredient.Recipe))]
         public virtual List<Ingredient> Ingredients { get; set; }
+
+        public override string ToString()
+        {
+            return $"Recipe for {Title}";
+        }
     }
 }

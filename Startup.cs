@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorRecipeApp.Data.Interfaces;
+using BlazorRecipeApp.Data.Services;
 using BlazorRecipeApp.Models;
 
 namespace BlazorRecipeApp
@@ -32,10 +34,23 @@ namespace BlazorRecipeApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                dbContextOptions => dbContextOptions
-                    .UseMySql(Configuration.GetConnectionString("LocalMySQL"), new MySqlServerVersion(new Version(8, 0, 25)))       
+
+            services.AddDbContextFactory<ApplicationDbContext>(options => options
+                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
+                    new MySqlServerVersion(new Version(8, 0, 25)))
+                .EnableSensitiveDataLogging(true)
             );
+
+            services.AddTransient<IRecipeService, EfRecipeServiceV1>();
+
+            //services.AddScoped<ApplicationDbContext>(p =>
+            //    p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>()
+            //        .CreateDbContext());
+
+            services.AddDbContext<ApplicationDbContext>(options => options
+                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
+                    new MySqlServerVersion(new Version(8, 0, 25)))
+                .EnableSensitiveDataLogging());
 
             services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
                 {
@@ -64,6 +79,8 @@ namespace BlazorRecipeApp
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

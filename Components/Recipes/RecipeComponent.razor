@@ -1,0 +1,124 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-white">
+                    <li class="breadcrumb-item"><a href="/recipes">Recipes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Recipe.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-end">
+        <ul class="list-unstyled list-inline">
+            <li class="list-inline-item">
+
+            </li>
+            <li class="list-inline-item">
+                <button class="btn btn-sm btn-outline-danger" @onclick="()=>Modal.Open()">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <Modal @ref="Modal">
+        <Title>
+            Delete the recipe for @Recipe.Title
+        </Title>
+        <Body>
+        <p>
+            Dou you really want to delete this recipe?
+        </p>
+        </Body>
+        <Footer>
+            <button type="button" class="btn btn-danger">Delete recipe</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Modal.Close()">Close</button>
+        </Footer>
+    </Modal>
+
+    <!-- Recipe -->
+    <div class="row">
+        <div class="col text-center">
+
+            @if (string.IsNullOrEmpty(Recipe.ImgPath))
+            {
+                <img src="/images/NoPicAvailable.png" style="max-height: 300px" alt="No picture of this dish available" />
+            }
+            else
+            {
+                <img src="/images/@Recipe.ImgPath" style="max-height: 300px" alt="Picture of the dish" />
+            }
+
+        </div>
+    </div>
+
+    <!-- Title -->
+    <div class="row">
+        <div class="col text-center">
+            <h5>@Recipe.Title</h5>
+            <p>@Recipe.Description</p>
+        </div>
+    </div>
+
+    <!-- Info -->
+    <div class="row d-flex justify-content-center p-2 mb-3" style="background-color: #f1f8e9;">
+        <ul class="list-inline m-0 align-self-center">
+            <li class="list-inline-item">
+                Recipe for @Recipe.Portions Persons
+            </li>
+            <li class="list-inline-item">
+                Preparation time: ca. @Recipe.TimeInMinutes min
+            </li>
+        </ul>
+    </div>
+
+    <div class="row justify-content-between">
+
+        <!-- Ingredients -->
+        <div class="col-md-6 pt-3" style="background-color: #f1f8e9;">
+            <ul class="list-unstyled list-inline">
+                @for (int e = 0; e < Recipe.Ingredients.Count; e++)
+                {
+                    <li class="list-inline-item text-right mb-1" style="width: 3rem">
+                        @if (Recipe.Ingredients[e].Amount == 0)
+                        {
+                            <span></span>
+                        }
+                        else
+                        {
+                            @Recipe.Ingredients[e].Amount
+                        }
+                    </li>
+                    <li class="list-inline-item mb-1" style="width: 5rem">
+                        @Recipe.Ingredients[e].Unit
+                    </li>
+                    <li class="list-inline-item mb-1">
+                        @Recipe.Ingredients[e].Name
+                    </li>
+                    <li class="list-inline-item mb-1">
+
+                    </li>
+                    <li class="list-inline-item mb-1">
+
+                    </li>
+                    <br />
+                }
+            </ul>
+        </div>
+
+
+        <!-- Instructions -->
+        <div class="col-md-6">
+            @Recipe.Instructions
+        </div>
+
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Recipe Recipe { get; set; }
+
+    private Modal Modal { get; set; }
+}

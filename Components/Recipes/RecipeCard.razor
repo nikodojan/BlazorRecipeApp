@@ -1,0 +1,24 @@
+﻿<div class="col p-0" style="height: 100%; width: 100%">
+    <a href="/recipes/@Recipe.Id">
+        <div class="card recipe-card">
+
+            @if (string.IsNullOrEmpty(Recipe.ImgPath))
+            {
+                <img class="card-img-top" src="/images/NoPicAvailable.png" alt="Dish image">
+            }
+            else
+            {
+                <img class="card-img-top" src="/images/@Recipe.ImgPath" alt="Dish image">   
+            }
+                        
+            <div class="card-body">
+                <h5 class="card-title">@Recipe.Title</h5>
+            </div>
+        </div>
+    </a>
+</div>
+
+@code {
+    [Parameter]
+    public Recipe Recipe { get; set; }
+}

@@ -1,0 +1,32 @@
+﻿@page "/recipes/allrecipes"
+@page "/recipes"
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<h3 class="text-center">Recipes</h3>
+
+<div class="row" style="max-width: 100%;">
+    @foreach (var r in AllRecipes)
+    {
+        <div class="col-12 col-sm-6 col-md-4" style="height:fit-content">
+            <RecipeCard Recipe="r"></RecipeCard>
+        </div>
+    }
+
+</div>
+
+
+@code {
+    public IEnumerable<Recipe> AllRecipes { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        using (ApplicationDbContext context = DbFactory.CreateDbContext())
+        {
+            AllRecipes = context.Recipes.ToList();
+        }
+    }
+
+
+
+}
