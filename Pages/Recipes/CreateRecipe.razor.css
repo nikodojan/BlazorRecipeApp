@@ -1,0 +1,17 @@
+﻿::deep .text-input {
+    border: 1px;
+    border-color: lightgrey;
+    border-radius: 0px;
+    border-style: solid;
+}
+
+::deep .text-input:focus {
+    border: 1px;
+    border-color: gray;
+    border-radius: 0px;
+    border-style: solid;
+    outline: none;
+    background-color: #bebebe;
+    caret-shape: bar;
+    caret-color: gray;
+}

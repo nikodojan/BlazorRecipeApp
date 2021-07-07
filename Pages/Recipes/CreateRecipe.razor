@@ -1,0 +1,101 @@
+﻿@page "/recipes/newrecipe"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager NavigationManager
+
+<h3>CreateRecipe</h3>
+
+<EditForm Model="@RecipeModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label>
+            Recipe Title:
+            <InputText @bind-Value="RecipeModel.Title" class="form-control noradius" />
+        </label>
+    @*</p>
+    <p>*@
+        <label>
+            Description (optional):
+            <InputText @bind-Value="RecipeModel.Description" class="form-control noradius" />
+        </label>
+    </p>    
+    <p>
+        <label>
+            Image path (optional):
+            <InputText @bind-Value="RecipeModel.ImgPath" class="form-control noradius" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Portions (optional):
+            <InputNumber @bind-Value="RecipeModel.Portions" class="form-control noradius"/>
+        </label>
+    @*</p>
+    <p>*@
+        <label>
+            Time (optional):
+            <InputNumber @bind-Value="RecipeModel.TimeInMinutes" class="form-control noradius"/>
+        </label>
+    </p>
+    <div>
+        <label>Amount, Unit, Name, Description (optional)</label>
+        <div>
+            @foreach (var i in RecipeModel.Ingredients)
+            {
+                <IngredientComponent IngredientModel="i" Groceries="@GroceryList"></IngredientComponent>
+            }
+        </div>
+        <div>
+            <button class="btn btn-primary" @onclick="AddIngredient">Add ingredient</button>
+        </div>
+    </div>
+    <p>
+        <label>
+            Instructions (optional):
+            <InputTextArea @bind-Value="RecipeModel.Instructions" class="form-control noradius"/>
+        </label>
+    </p>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-outline-dark">Cancel</button>
+
+</EditForm>
+
+
+@code {
+    public Recipe RecipeModel { get; set; } = new Recipe();
+
+    public List<Grocery> GroceryList { get; set; } = new List<Grocery>();
+
+    protected override void OnInitialized()
+    {
+        using (var ctx = ContextFactory.CreateDbContext())
+        {
+            try
+            {
+                GroceryList = ctx.Groceries.OrderBy(g=>g.GroceryName).ToList() ?? new List<Grocery>();
+            }
+            catch (Exception e)
+            {
+                GroceryList = new List<Grocery>();
+            }
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        using (var ctx = ContextFactory.CreateDbContext())
+        {
+            ctx.Recipes.Add(RecipeModel);
+            await ctx.SaveChangesAsync();
+        }
+        NavigationManager.NavigateTo($"/recipes/{RecipeModel.Id}");
+    }
+
+    private void AddIngredient()
+    {
+        RecipeModel.Ingredients.Add(new Ingredient());
+        StateHasChanged();
+    }
+}
