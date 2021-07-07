@@ -11,31 +11,40 @@ namespace BlazorRecipeApp.Data.Services
     public class EfRecipeServiceV1 : IRecipeService
     {
         private IDbContextFactory<ApplicationDbContext> _factory;
-        private ApplicationDbContext _context;
 
         public EfRecipeServiceV1(IDbContextFactory<ApplicationDbContext> factory)
         {
             _factory = factory;
-            _context = _factory.CreateDbContext();
         }
 
-        public IEnumerable<Recipe> GetRecipes()
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync()
         {
-            var recipes = _context.Recipes;
-            return recipes;
-            
+            using (var ctx = _factory.CreateDbContext())
+            {
+                var recipes = await ctx.Recipes.ToListAsync();
+                return recipes;
+            }
         }
 
-        public async Task<Recipe> GetRecipeByIdAsync(int recipeId)
+        public async Task<Recipe> GetRecipeByIdAsync(int? recipeId)
         {
-            Recipe recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == recipeId);
-            return recipe ?? new Recipe() { Id = 0, Title = "Recipe not found", Instructions = string.Empty };
+            if (recipeId == null) return new Recipe() {Id = 0, Title = "No recipe found", Description = ""};
+            using (var ctx = _factory.CreateDbContext())
+            {
+                Recipe recipe = await ctx.Recipes
+                    .Include(r=>r.Ingredients)
+                    .FirstOrDefaultAsync(r => r.Id == recipeId);
+                return recipe ?? new Recipe() { Id = 0, Title = "Recipe not found", Instructions = string.Empty };
+            }
         }
 
         public async Task AddRecipeAsync(Recipe recipe)
         {
-            //_context.Recipes.Add(recipe);
-            //await _context.SaveChangesAsync();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Recipes.Add(recipe);
+                await ctx.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteRecipeAsync(Recipe recipe)
@@ -44,10 +53,13 @@ namespace BlazorRecipeApp.Data.Services
             //await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateRecipe(Recipe recipe)
+        public async Task UpdateRecipeAsync(Recipe recipe)
         {
-            //_context.Recipes.Update(recipe);
-            //await _context.SaveChangesAsync();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Recipes.Update(recipe);
+                await ctx.SaveChangesAsync();
+            }
         }
 
     }

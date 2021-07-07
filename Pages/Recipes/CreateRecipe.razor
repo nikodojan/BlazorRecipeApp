@@ -1,6 +1,7 @@
-﻿@page "/recipes/newrecipe"
+﻿@page "/recipes/new"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager NavigationManager
+@inject IRecipeService RecipeService
 
 <h3>CreateRecipe</h3>
 
@@ -47,7 +48,7 @@
             }
         </div>
         <div>
-            <button class="btn btn-primary" @onclick="AddIngredient">Add ingredient</button>
+            <button type="button" class="btn btn-primary" @onclick="AddIngredient">Add ingredient</button>
         </div>
     </div>
     <p>
@@ -85,17 +86,12 @@
 
     private async Task HandleValidSubmit()
     {
-        using (var ctx = ContextFactory.CreateDbContext())
-        {
-            ctx.Recipes.Add(RecipeModel);
-            await ctx.SaveChangesAsync();
-        }
+        await RecipeService.AddRecipeAsync(RecipeModel);
         NavigationManager.NavigateTo($"/recipes/{RecipeModel.Id}");
     }
 
     private void AddIngredient()
     {
         RecipeModel.Ingredients.Add(new Ingredient());
-        StateHasChanged();
     }
 }

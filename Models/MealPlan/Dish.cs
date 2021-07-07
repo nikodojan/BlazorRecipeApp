@@ -27,6 +27,6 @@ namespace BlazorRecipeApp.Models.MealPlan
         public int? RecipeId { get; set; }
 
         [ForeignKey(nameof(RecipeId))]
-        public virtual Recipe Recipe { get; set; }
+        public Recipe Recipe { get; set; }
     }
 }

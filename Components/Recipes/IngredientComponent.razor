@@ -2,7 +2,7 @@
     <InputNumber @bind-Value="IngredientModel.Amount" class="form-control noradius mx-1 my-1" style="width: 5rem"/>
     <InputText @bind-Value="IngredientModel.Unit" class="form-control noradius mx-1 my-1" style="width: 5rem"/>
     <InputSelect @bind-Value="IngredientModel.Name" class="form-control noradius mx-2 my-1">
-        <option value="">Select a product...</option>
+        <option value="@NoName">Select a product...</option>
         @foreach (var g in Groceries)
         {
             <option value="@g.GroceryName">@g.GroceryName</option>
@@ -23,9 +23,6 @@
                 @grocery.GroceryName
             </ResultTemplate>
         </BlazoredTypeahead>*@
-    
-
-
     <InputText @bind-Value="IngredientModel.Description" class="form-control noradius mx-1 my-1"/>
 </div>
 
@@ -35,6 +32,8 @@
 
     [Parameter]
     public List<Grocery> Groceries { get; set; } = new List<Grocery>();
+
+    public string NoName => string.Empty;
 
     //private async Task<IEnumerable<Grocery>> SearchGroceryAsync(string searchText)
     //{

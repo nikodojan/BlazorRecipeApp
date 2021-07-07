@@ -1,5 +1,6 @@
 ﻿@page "/"
-
+@using BlazorRecipeApp.Models.MealPlan
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
@@ -7,3 +8,38 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <MMButton Value="Test" TxtColor="white" BgColor="#17a2b8"></MMButton>
+<br/>
+<h5>@TestMenu.Name</h5>
+<p>@TestMenu.Notes</p>
+@foreach (var day in TestMenu.Days)
+{
+    @day.Name<br/>
+    @foreach (var meal in day.Meals)
+    {
+        @meal.Name
+        @foreach (var dish in meal.Dishes)
+        {
+            @dish.Recipe.Title
+        }
+    }
+}
+
+
+<hr class="mb-5"/>
+
+@code
+{
+    public Menu TestMenu { get; set; }
+
+    protected override void OnInitialized()
+    {
+        using (var ctx = ContextFactory.CreateDbContext())
+        {
+            TestMenu = ctx.Menus
+                .Include(m=>m.Days)
+                .ThenInclude(d=>d.Meals)
+                .ThenInclude(meal=>meal.Dishes)
+                .ThenInclude(dish=>dish.Recipe).FirstOrDefault(m => m.Id == 1);
+        }
+    }
+}

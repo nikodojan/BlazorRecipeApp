@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BlazorRecipeApp.Models.MealPlan
 {
     [Table("Day")]
-    public partial class Day
+    public class Day
     {
         public Day()
         {
@@ -30,6 +30,6 @@ namespace BlazorRecipeApp.Models.MealPlan
         public virtual Menu Menu { get; set; }
 
         [InverseProperty(nameof(Meal.Day))]
-        public virtual List<Meal> Meals { get; set; }
+        public List<Meal> Meals { get; set; }
     }
 }

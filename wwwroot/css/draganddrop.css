@@ -1,0 +1,96 @@
+﻿.dad-container {
+    border: 1px solid #c0c0c0;
+    border-radius: 12px;
+}
+
+.dropzone {
+    width: 500px;
+    border: 1px solid #c0c0c0;
+    border-radius: 12px;
+}
+
+.draggable {
+    height: 1.5rem;
+    margin: 5px;
+    border: 0.75px solid #c0c0c0;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+    font-size: 0.9rem;
+    font-weight: light;
+    display: flex;
+}
+
+.draggable:hover {
+    background-color: #FAFAFA;
+}
+
+.draggable .draggable-label {
+    text-align: left;
+    margin-left: 0.8rem;
+    flex: 1;
+    vertical-align: middle;
+}
+
+.draggable-icon {
+    text-align: right;
+    height: 1.5rem;
+    width: 1.5rem;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    display: flex;
+    padding: auto;
+}
+
+.draggable-icon img {
+    vertical-align: middle;
+    align-self: center;
+    object-fit: cover;
+    margin: auto;
+}
+
+.dragged {
+    opacity: .5;
+    background-color: #FAFAFA;
+}
+
+.name-input {
+    border: none;
+    border-radius: 12px;
+    padding: 0 0.5rem;
+    width: 100%;
+}
+
+.name-input:hover {
+    background: #FAFAFA;
+}
+
+.name-input:focus {
+    border: 0.5px solid #c0c0c0;
+}
+
+.menu-name {
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.dnd-button {
+    border-radius: 12px;
+    margin: 0.5rem;
+}
+
+.day-button {
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: #c0c0c0;
+}
+
+.day-button:hover {
+    background: #fafafa;
+    color: darkgrey;
+}
+
+*:focus {
+    outline: none !important
+}

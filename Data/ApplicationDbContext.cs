@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BlazorRecipeApp.Models;
+using BlazorRecipeApp.Models.MealPlan;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorRecipeApp.Data
@@ -14,6 +15,11 @@ namespace BlazorRecipeApp.Data
         public DbSet<Grocery> Groceries { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Day> Days { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

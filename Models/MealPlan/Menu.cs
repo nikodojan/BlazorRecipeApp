@@ -25,6 +25,6 @@ namespace BlazorRecipeApp.Models.MealPlan
         public string Notes { get; set; }
 
         [InverseProperty(nameof(Day.Menu))]
-        public virtual List<Day> Days { get; set; }
+        public List<Day> Days { get; set; }
     }
 }
