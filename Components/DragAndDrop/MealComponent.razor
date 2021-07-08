@@ -1,0 +1,45 @@
+﻿
+
+<div class="row">
+    <div class="col-12 col-md-2 justify-content-center justify-content-md-start pl-md-3">
+        <input class="name-input" @bind="Meal.Name" />
+        @*<p class="text-md-left text-center">@Meal.Name</p>*@
+        <br/>
+        <p style="font-size: 8px">(Meal index: @MealIndex,<br/> Day index: @DayIndex)</p>
+    </div>
+    <div class="col-12 col-md-auto">
+        <ul class="list-unstyled dropzone"
+            style="min-height: 3rem"
+            ondragover="event.preventDefault();"
+            ondragstart="event.dataTransfer.setData('', event.target.id);"
+            @ondrop="HandleDrop">
+
+            @foreach (var dish in Meal.Dishes)
+            {
+                <DndItem DDish="@dish" DayIndex="@DayIndex" MealIndex="@MealIndex" />
+            }
+
+        </ul>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] DndContainer Container { get; set; }
+
+    public Meal Meal { get; set; }
+    [Parameter] public int DayIndex { get; set; }
+    [Parameter] public int MealIndex { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Meal = Container.Menu.Days[DayIndex].Meals[MealIndex];
+    }
+
+    public void HandleDrop()
+    {
+        Container.Payload.MealId = this.Meal.Id;
+        Meal.Dishes.Add(Container.Payload);
+        Container.UpdateMenu();
+    }
+
+}

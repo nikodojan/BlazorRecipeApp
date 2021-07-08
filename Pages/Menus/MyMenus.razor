@@ -1,0 +1,43 @@
+﻿@page "/menus/mymenus"
+@inject IMenuService MenuService
+@inject NavigationManager NavManager
+
+<h3>MyMenus</h3>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+    @foreach (var menu in Menus)
+    {
+        <tr>
+            <td>
+                @menu.Id
+            </td>
+            <td>
+                @menu.Name
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-primary"
+                        @onclick="()=>HandleGoToButtonClick(menu.Id)">Go to</button>
+            </td>
+        </tr>
+
+    }
+</table>
+
+
+@code {
+    public IEnumerable<Menu> Menus { get; set; } = new List<Menu>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Menus = await MenuService.GetAllMenusAsync();
+    }
+
+    private void HandleGoToButtonClick(int menuId)
+    {
+        NavManager.NavigateTo($"/menus/edit/{menuId}");
+    }
+
+}

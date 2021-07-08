@@ -1,0 +1,46 @@
+﻿@inject NavigationManager NavManager
+@inject IRecipeService RecipeService
+
+<div class="row d-flex justify-content-end">
+    <ul class="list-unstyled list-inline">
+        <li class="list-inline-item">
+            <button type="button" class="btn btn-sm btn-outline-primary" @onclick="HandleEditButton">Edit</button>
+        </li>
+        <li class="list-inline-item">
+            <button type="button" class="btn btn-sm btn-outline-danger" @onclick="()=>Modal.Open()">Delete</button>
+        </li>
+    </ul>
+</div>
+
+<Modal @ref="Modal">
+    <Title>
+        Delete the recipe for @Recipe.Title
+    </Title>
+    <Body>
+    <p>
+        Dou you really want to delete this recipe?
+    </p>
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-danger" @onclick="HandleDeleteButton">Delete recipe</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Modal.Close()">Close</button>
+    </Footer>
+</Modal>
+
+@code {
+    [Parameter]
+    public Recipe Recipe { get; set; }
+
+    private Modal Modal { get; set; }
+
+    private void HandleEditButton()
+    {
+        NavManager.NavigateTo($"/recipes/edit/{Recipe.Id}");
+    }
+
+    private async Task HandleDeleteButton()
+    {
+        await RecipeService.DeleteRecipeAsync(Recipe);
+        NavManager.NavigateTo("/recipes");
+    }
+}

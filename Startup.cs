@@ -42,6 +42,7 @@ namespace BlazorRecipeApp
             );
 
             services.AddTransient<IRecipeService, EfRecipeServiceV1>();
+            services.AddTransient<IMenuService, EfMenuServiceV1>();
 
             //services.AddScoped<ApplicationDbContext>(p =>
             //    p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>()

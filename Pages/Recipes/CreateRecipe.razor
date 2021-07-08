@@ -1,4 +1,5 @@
 ﻿@page "/recipes/new"
+@page "/recipes/edit/{recipeId:int?}"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager NavigationManager
 @inject IRecipeService RecipeService
@@ -8,14 +9,11 @@
 <EditForm Model="@RecipeModel" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
     <p>
         <label>
             Recipe Title:
             <InputText @bind-Value="RecipeModel.Title" class="form-control noradius" />
         </label>
-    @*</p>
-    <p>*@
         <label>
             Description (optional):
             <InputText @bind-Value="RecipeModel.Description" class="form-control noradius" />
@@ -32,8 +30,6 @@
             Portions (optional):
             <InputNumber @bind-Value="RecipeModel.Portions" class="form-control noradius"/>
         </label>
-    @*</p>
-    <p>*@
         <label>
             Time (optional):
             <InputNumber @bind-Value="RecipeModel.TimeInMinutes" class="form-control noradius"/>
@@ -65,12 +61,21 @@
 
 
 @code {
+    [Parameter]
+    public int? RecipeId { get; set; }
+
     public Recipe RecipeModel { get; set; } = new Recipe();
 
     public List<Grocery> GroceryList { get; set; } = new List<Grocery>();
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
+        if (RecipeId != null)
+        {
+            int id = RecipeId ?? 0;
+            RecipeModel = await RecipeService.GetRecipeByIdAsync(id);
+        }
+
         using (var ctx = ContextFactory.CreateDbContext())
         {
             try
@@ -86,7 +91,17 @@
 
     private async Task HandleValidSubmit()
     {
-        await RecipeService.AddRecipeAsync(RecipeModel);
+        RecipeModel.Ingredients
+            .RemoveAll(i => string.IsNullOrEmpty(i.Name) && string.IsNullOrEmpty(i.Description));
+
+        if (RecipeId is null)
+        {
+            await RecipeService.AddRecipeAsync(RecipeModel);
+        }
+        else
+        {
+            await RecipeService.UpdateRecipeAsync(RecipeModel);
+        }
         NavigationManager.NavigateTo($"/recipes/{RecipeModel.Id}");
     }
 

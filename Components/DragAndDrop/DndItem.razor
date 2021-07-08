@@ -1,0 +1,41 @@
+﻿
+<li draggable="true"
+    @ondragstart="@(() => HandleDragStart(DDish))"
+    @ondragend="@HandleDragEnd"
+    title="@DDish.Text">
+
+    <div class="@cssClass">
+        <div class="draggable-label">@DDish.Recipe.Title @((!string.IsNullOrEmpty(DDish.Text)) ? ", " + @DDish.Text : string.Empty)</div>
+        <div class="draggable-icon"><img src="/images/icons/drag_indicator-black-18dp.svg" /></div>
+    </div>
+
+
+
+</li>
+
+@code {
+    [CascadingParameter] DndContainer Container { get; set; }
+
+    [Parameter] public Dish DDish { get; set; }
+    [Parameter] public int DayIndex { get; set; }
+    [Parameter] public int MealIndex { get; set; }
+
+    private string cssClass { get; set; }
+
+    protected override void OnInitialized()
+    {
+        cssClass = "draggable";
+    }
+
+    private void HandleDragStart(Dish dish)
+    {
+        Container.Payload = dish;
+        Container.PayloadOutbound = new[] {DayIndex, MealIndex};
+        cssClass = "draggable dragged";
+    }
+
+    private void HandleDragEnd()
+    {
+        cssClass = "draggable";
+    }
+}

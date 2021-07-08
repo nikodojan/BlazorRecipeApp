@@ -1,12 +1,12 @@
 ﻿.dad-container {
     border: 1px solid #c0c0c0;
-    border-radius: 12px;
+    border-radius: 0px;
 }
 
 .dropzone {
     width: 500px;
     border: 1px solid #c0c0c0;
-    border-radius: 12px;
+    border-radius: 0px;
 }
 
 .draggable {

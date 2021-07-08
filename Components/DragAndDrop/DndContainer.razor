@@ -1,0 +1,102 @@
+﻿@inject IMenuService MenuService
+@inject NavigationManager NavManager
+
+
+<div class="dad-container">
+    <div class="row p-2">
+        <div class="col">
+            <input type="text" @bind="Menu.Name" class="name-input menu-name" />
+        </div>
+
+        <div class="col text-right">
+            <button type="button" class="btn btn-outline-success dnd-button" @onclick="AddDay">Add day</button>
+
+            <button type="button" class="btn btn-outline-danger dnd-button" @onclick="DeleteMenu">Delete menu</button>
+
+            <button type="button" class="btn btn-outline-primary dnd-button" @onclick="SaveMenuToDb">Save</button>
+        </div>
+        <hr />
+    </div>
+    <CascadingValue Value="this">
+        <ChildContent>
+            @for (int d = 0; d < Menu.Days.Count; d++)
+            {
+                <div class="p-3 justify-content-start">
+                    <div>
+                        <h6 class="text-left">@Menu.Days[d].Name (@Menu.Days[d].Meals.Count meals)</h6>
+                        @{int day = d;}
+                        <button class="day-button" @onclick="(e => AddMealToDay(e, day))">Add meal</button>
+                        <button class="day-button" @onclick="(e) => DeleteDay(e, day)">Delete day</button>
+                    </div>
+
+                    @for (int m = 0; m < Menu.Days[d].Meals.Count; m++)
+                    {
+                        <MealComponent DayIndex="@d" MealIndex="@m"></MealComponent>
+                    }
+                </div>
+                <hr />
+
+            }
+        </ChildContent>
+    </CascadingValue>
+
+</div>
+
+
+@code {
+
+    [Parameter] public Menu Menu { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public Dish Payload { get; set; } = new Dish();
+    public int[] PayloadOutbound { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    public void UpdateMenu()
+    {
+        Dish toBeDeleted = Menu.Days[PayloadOutbound[0]].Meals[PayloadOutbound[1]].Dishes
+            .Find(dish => dish == Payload);
+
+        Menu.Days[PayloadOutbound[0]].Meals[PayloadOutbound[1]].Dishes
+            .Remove(toBeDeleted);
+        StateHasChanged();
+    }
+
+    private async Task SaveMenuToDb()
+    {
+        await MenuService.UpdateMenuAsync(Menu);
+    }
+
+    private async Task AddDay()
+    {
+        Day newDay = new Day() { Name = "Untitled day" };
+        Meal newMeal = new Meal() { Name = "Untitled meal" };
+        newDay.Meals.Add(newMeal);
+        Menu.Days.Add(newDay);
+        //await MenuService.UpdateMenuAsync(Menu);
+    }
+
+    private async Task DeleteMenu()
+    {
+        throw new NotImplementedException();
+        //NavManager.NavigateTo("/menus/mymenus");
+    }
+
+    private async Task AddMealToDay(MouseEventArgs e, int day)
+    {
+        Meal newMeal = new Meal() {Name = "Untitled meal"};
+        Menu.Days[day].Meals.Add(newMeal);
+        //await MenuService.UpdateMenuAsync(Menu);
+    }
+
+    private async Task DeleteDay(MouseEventArgs e, int day)
+    {
+        Menu.Days.RemoveAt(day);
+        //await MenuService.UpdateMenuAsync(Menu);
+    }
+
+}

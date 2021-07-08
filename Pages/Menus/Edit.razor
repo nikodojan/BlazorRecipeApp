@@ -1,0 +1,22 @@
+﻿@page "/menus/edit/{menuId:int}"
+@inject IMenuService MenuService
+<h3>Edit</h3>
+
+@if (Menu != null)
+{
+    <DndContainer Menu="Menu"></DndContainer>
+}
+
+@code {
+    [Parameter]
+    public int MenuId { get; set; }
+
+    public Menu Menu { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Menu = await MenuService.GetMenuByIdAsync(MenuId);
+        StateHasChanged();
+    }
+
+}

@@ -10,7 +10,7 @@ namespace BlazorRecipeApp.Data.Interfaces
     {
         Task<IEnumerable<Recipe>> GetRecipesAsync();
         //IEnumerable<Recipe> GetRecipes();
-        Task<Recipe> GetRecipeByIdAsync(int? recipeId);
+        Task<Recipe> GetRecipeByIdAsync(int recipeId);
         Task AddRecipeAsync(Recipe recipe);
         Task DeleteRecipeAsync(Recipe recipe);
         Task UpdateRecipeAsync(Recipe recipe);

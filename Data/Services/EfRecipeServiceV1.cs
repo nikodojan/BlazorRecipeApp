@@ -26,7 +26,7 @@ namespace BlazorRecipeApp.Data.Services
             }
         }
 
-        public async Task<Recipe> GetRecipeByIdAsync(int? recipeId)
+        public async Task<Recipe> GetRecipeByIdAsync(int recipeId)
         {
             if (recipeId == null) return new Recipe() {Id = 0, Title = "No recipe found", Description = ""};
             using (var ctx = _factory.CreateDbContext())
@@ -49,8 +49,11 @@ namespace BlazorRecipeApp.Data.Services
 
         public async Task DeleteRecipeAsync(Recipe recipe)
         {
-            //_context.Recipes.Remove(recipe);
-            //await _context.SaveChangesAsync();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Recipes.Remove(recipe);
+                await ctx.SaveChangesAsync();
+            }
         }
 
         public async Task UpdateRecipeAsync(Recipe recipe)
