@@ -9,21 +9,22 @@ Welcome to your new app.
 
 <MMButton Value="Test" TxtColor="white" BgColor="#17a2b8"></MMButton>
 <br/>
-<h5>@TestMenu.Name</h5>
-<p>@TestMenu.Notes</p>
-@foreach (var day in TestMenu.Days)
-{
-    @day.Name<br/>
-    @foreach (var meal in day.Meals)
-    {
-        @meal.Name
-        @foreach (var dish in meal.Dishes)
-        {
-            @dish.Recipe.Title
-        }
-    }
-}
-
+<div class="input-group-sm">
+    <div class="input-group-prepend">
+        <span class="input-group-text"></span>
+    </div>
+    <input type="text"
+           class="form-control"
+           style="border: 0px;"
+           disabled="disabled"
+           value="some test text here"/>
+</div>
+<div class="input-group input-group-sm">
+    <div class="input-group-prepend">
+        <span class="input-group-text" ><span class="oi oi-elevator"></span></span>
+    </div>
+    <input type="text" class="form-control" value="whatever value here" disabled>
+</div>
 
 <hr class="mb-5"/>
 
@@ -33,13 +34,6 @@ Welcome to your new app.
 
     protected override void OnInitialized()
     {
-        using (var ctx = ContextFactory.CreateDbContext())
-        {
-            TestMenu = ctx.Menus
-                .Include(m=>m.Days)
-                .ThenInclude(d=>d.Meals)
-                .ThenInclude(meal=>meal.Dishes)
-                .ThenInclude(dish=>dish.Recipe).FirstOrDefault(m => m.Id == 1);
-        }
+
     }
 }

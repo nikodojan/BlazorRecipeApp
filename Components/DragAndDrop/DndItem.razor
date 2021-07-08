@@ -4,10 +4,17 @@
     @ondragend="@HandleDragEnd"
     title="@DDish.Text">
 
-    <div class="@cssClass">
-        <div class="draggable-label">@DDish.Recipe.Title @((!string.IsNullOrEmpty(DDish.Text)) ? ", " + @DDish.Text : string.Empty)</div>
-        <div class="draggable-icon"><img src="/images/icons/drag_indicator-black-18dp.svg" /></div>
+    <div class="input-group input-group-sm @cssClass">
+        <div class="input-group-prepend">
+            <span class="input-group-text drag-symbol"><span class="oi oi-elevator"></span></span>
+        </div>
+        <input type="text"
+               class="form-control"
+               style="border: 0px;"
+               disabled="disabled"
+               value="@DDish.Recipe.Title @((!string.IsNullOrEmpty(DDish.Text)) ? ", " + @DDish.Text : string.Empty)"/>
     </div>
+
 
 
 
@@ -22,7 +29,7 @@
 
     private string cssClass { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         cssClass = "draggable";
     }

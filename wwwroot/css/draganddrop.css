@@ -4,50 +4,38 @@
 }
 
 .dropzone {
-    width: 500px;
+    width: 100%;
+    min-width: 300px;
     border: 1px solid #c0c0c0;
     border-radius: 0px;
+    padding: 0 4px 0 0;
 }
 
 .draggable {
-    height: 1.5rem;
-    margin: 5px;
-    border: 0.75px solid #c0c0c0;
-    border-radius: 20px;
+    color: black !important;
+    border-radius: 0px;
+    border: 0.5px solid #c0c0c0;
     background-color: white;
-    color: black;
-    font-size: 0.9rem;
-    font-weight: light;
-    display: flex;
+    margin: 2px 4px 2px 2px;
+    width: 100%;
 }
 
-.draggable:hover {
+.draggable:hover input {
     background-color: #FAFAFA;
 }
 
-.draggable .draggable-label {
-    text-align: left;
-    margin-left: 0.8rem;
-    flex: 1;
-    vertical-align: middle;
+
+.draggable input:disabled {
+    background-color: transparent !important;
+    border: none !important;
 }
 
-.draggable-icon {
-    text-align: right;
-    height: 1.5rem;
-    width: 1.5rem;
-    vertical-align: middle;
-    margin-right: 0.5rem;
-    display: flex;
-    padding: auto;
+.drag-symbol {
+    border: none !important;
+    border-radius: 0px !important;
+    background-color: transparent !important;
 }
 
-.draggable-icon img {
-    vertical-align: middle;
-    align-self: center;
-    object-fit: cover;
-    margin: auto;
-}
 
 .dragged {
     opacity: .5;
@@ -56,7 +44,7 @@
 
 .name-input {
     border: none;
-    border-radius: 12px;
+    border-radius: 0px;
     padding: 0 0.5rem;
     width: 100%;
 }
@@ -75,7 +63,7 @@
 }
 
 .dnd-button {
-    border-radius: 12px;
+    border-radius: 0px;
     margin: 0.5rem;
 }
 
@@ -84,6 +72,7 @@
     border-radius: 8px;
     background: none;
     color: #c0c0c0;
+    font-size: 0.75rem;
 }
 
 .day-button:hover {
