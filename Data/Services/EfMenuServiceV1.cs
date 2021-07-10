@@ -53,14 +53,23 @@ namespace BlazorRecipeApp.Data.Services
             }
         }
 
-        public Task UpdateMenuAsync(Menu menu)
+        public async Task UpdateMenuAsync(Menu menu)
         {
-            throw new NotImplementedException();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Menus.Update(menu);
+                await ctx.SaveChangesAsync();
+            }
+            
         }
 
-        public Task DeleteMenuAsync(Menu menu)
+        public async Task DeleteMenuAsync(Menu menu)
         {
-            throw new NotImplementedException();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Menus.Remove(menu);
+                await ctx.SaveChangesAsync();
+            }
         }
     }
 }

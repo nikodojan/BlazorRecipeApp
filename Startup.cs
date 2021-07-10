@@ -44,10 +44,6 @@ namespace BlazorRecipeApp
             services.AddTransient<IRecipeService, EfRecipeServiceV1>();
             services.AddTransient<IMenuService, EfMenuServiceV1>();
 
-            //services.AddScoped<ApplicationDbContext>(p =>
-            //    p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>()
-            //        .CreateDbContext());
-
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
                     new MySqlServerVersion(new Version(8, 0, 25)))
@@ -78,10 +74,10 @@ namespace BlazorRecipeApp
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

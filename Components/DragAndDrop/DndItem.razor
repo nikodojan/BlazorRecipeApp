@@ -1,10 +1,9 @@
-﻿
-<li draggable="true"
+﻿<li draggable="true"
     @ondragstart="@(() => HandleDragStart(DDish))"
     @ondragend="@HandleDragEnd"
     title="@DDish.Text">
 
-    <div class="input-group input-group-sm @cssClass">
+    <div class="input-group input-group-sm @CssClass">
         <div class="input-group-prepend">
             <span class="input-group-text drag-symbol"><span class="oi oi-elevator"></span></span>
         </div>
@@ -14,10 +13,6 @@
                disabled="disabled"
                value="@DDish.Recipe.Title @((!string.IsNullOrEmpty(DDish.Text)) ? ", " + @DDish.Text : string.Empty)"/>
     </div>
-
-
-
-
 </li>
 
 @code {
@@ -27,22 +22,22 @@
     [Parameter] public int DayIndex { get; set; }
     [Parameter] public int MealIndex { get; set; }
 
-    private string cssClass { get; set; }
+    private string CssClass { get; set; }
 
     protected override void OnParametersSet()
     {
-        cssClass = "draggable";
+        CssClass = "draggable";
     }
 
     private void HandleDragStart(Dish dish)
     {
         Container.Payload = dish;
         Container.PayloadOutbound = new[] {DayIndex, MealIndex};
-        cssClass = "draggable dragged";
+        CssClass = "draggable dragged";
     }
 
     private void HandleDragEnd()
     {
-        cssClass = "draggable";
+        CssClass = "draggable";
     }
 }
