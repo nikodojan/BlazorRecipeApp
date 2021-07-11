@@ -1,4 +1,5 @@
 ﻿@page "/recipes/{RecipeId:int}"
+@using BlazorRecipeApp.Services.Interfaces
 @inject IRecipeService RecipeService
 
 <RecipeComponent Recipe="@Recipe"></RecipeComponent>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorRecipeApp.Data.Interfaces;
+using BlazorRecipeApp.Data;
 using BlazorRecipeApp.Models;
+using BlazorRecipeApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorRecipeApp.Data.Services
+namespace BlazorRecipeApp.Services.Services
 {
     public class EfRecipeServiceV1 : IRecipeService
     {

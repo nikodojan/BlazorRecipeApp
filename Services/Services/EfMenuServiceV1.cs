@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorRecipeApp.Data.Interfaces;
+using BlazorRecipeApp.Data;
 using BlazorRecipeApp.Models.MealPlan;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
+using BlazorRecipeApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorRecipeApp.Data.Services
+namespace BlazorRecipeApp.Services.Services
 {
     public class EfMenuServiceV1 : IMenuService
     {
@@ -53,14 +51,23 @@ namespace BlazorRecipeApp.Data.Services
             }
         }
 
-        public Task UpdateMenuAsync(Menu menu)
+        public async Task UpdateMenuAsync(Menu menu)
         {
-            throw new NotImplementedException();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Menus.Update(menu);
+                await ctx.SaveChangesAsync();
+            }
+            
         }
 
-        public Task DeleteMenuAsync(Menu menu)
+        public async Task DeleteMenuAsync(Menu menu)
         {
-            throw new NotImplementedException();
+            using (var ctx = _factory.CreateDbContext())
+            {
+                ctx.Menus.Remove(menu);
+                await ctx.SaveChangesAsync();
+            }
         }
     }
 }

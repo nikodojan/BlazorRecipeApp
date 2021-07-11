@@ -6,6 +6,12 @@
     <div class="row p-2">
         <div class="col">
             <input type="text" @bind="Menu.Name" class="name-input menu-name" />
+            @*@if (IsSaving)
+            {
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Saving...</span>
+                </div>
+            }*@
         </div>
 
         <div class="col text-right">
@@ -21,12 +27,18 @@
         <ChildContent>
             @for (int d = 0; d < Menu.Days.Count; d++)
             {
+                int day = d;
                 <div class="p-3 justify-content-start">
-                    <div>
-                        <h6 class="text-left">@Menu.Days[d].Name (@Menu.Days[d].Meals.Count meals)</h6>
-                        @{int day = d;}
-                        <button class="day-button" @onclick="(e => AddMealToDay(e, day))">Add meal</button>
-                        <button class="day-button" @onclick="(e) => DeleteDay(e, day)">Delete day</button>
+                    
+                    <div class="row">
+                        
+                        <div class="col-12 col-md-2 justify-content-center justify-content-md-start pl-md-3">
+                            <input type="text" @bind="@Menu.Days[d].Name" class="name-input menu-name"/>
+                        </div>
+                        <div class="col-12 col-md-auto">
+                            <button type="button" class="day-button" @onclick="(e => AddMealToDay(e, day))">Add meal</button>
+                            <button type="button" class="day-button" @onclick="(e) => DeleteDay(e, day)">Delete day</button>
+                        </div>
                     </div>
 
                     @for (int m = 0; m < Menu.Days[d].Meals.Count; m++)
@@ -35,7 +47,6 @@
                     }
                 </div>
                 <hr />
-
             }
         </ChildContent>
     </CascadingValue>
@@ -51,10 +62,12 @@
     public Dish Payload { get; set; } = new Dish();
     public int[] PayloadOutbound { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    }
+    private bool IsSaving { get; set; } = false;
+
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    await StartAutoSave();
+    //}
 
     public void UpdateMenu()
     {
@@ -98,5 +111,16 @@
         Menu.Days.RemoveAt(day);
         //await MenuService.UpdateMenuAsync(Menu);
     }
+
+    //private async Task StartAutoSave()
+    //{
+    //    await Task.Delay(10000);
+    //    IsSaving = true;
+    //    StateHasChanged();
+    //    await SaveMenuToDb();
+    //    IsSaving = false;
+    //    StateHasChanged();
+    //    await StartAutoSave();
+    //}
 
 }

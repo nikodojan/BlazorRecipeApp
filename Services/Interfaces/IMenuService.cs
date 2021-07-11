@@ -1,10 +1,8 @@
-﻿using BlazorRecipeApp.Models.MealPlan;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorRecipeApp.Models.MealPlan;
 
-namespace BlazorRecipeApp.Data.Interfaces
+namespace BlazorRecipeApp.Services.Interfaces
 {
     public interface IMenuService
     {
