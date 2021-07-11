@@ -3,6 +3,8 @@
 
 
 <div class="dad-container">
+    <CascadingValue Value="this">
+        <ChildContent>
     <div class="row p-2">
         <div class="col">
             <input type="text" @bind="Menu.Name" class="name-input menu-name" />
@@ -23,8 +25,7 @@
         </div>
         <hr />
     </div>
-    <CascadingValue Value="this">
-        <ChildContent>
+ 
             @for (int d = 0; d < Menu.Days.Count; d++)
             {
                 int day = d;
@@ -56,18 +57,21 @@
 
 @code {
 
-    [Parameter] public Menu Menu { get; set; }
+    [Parameter] public int MenuId { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public Menu Menu { get; set; } = new Menu();
 
     public Dish Payload { get; set; } = new Dish();
     public int[] PayloadOutbound { get; set; }
 
     private bool IsSaving { get; set; } = false;
 
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    await StartAutoSave();
-    //}
+    protected override async Task OnParametersSetAsync()
+    {
+        Menu = await MenuService.GetMenuByIdAsync(MenuId);
+        //await StartAutoSave();
+    }
 
     public void UpdateMenu()
     {
@@ -82,6 +86,7 @@
     private async Task SaveMenuToDb()
     {
         await MenuService.UpdateMenuAsync(Menu);
+        StateHasChanged();
     }
 
     private async Task AddDay()

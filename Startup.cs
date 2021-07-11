@@ -14,9 +14,11 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorRecipeApp.Services.Services;
 using BlazorRecipeApp.Models;
+using BlazorRecipeApp.Services.Interfaces;
 
 namespace BlazorRecipeApp
 {
@@ -73,7 +75,17 @@ namespace BlazorRecipeApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:44379/") });
+
+            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            services.AddOptions();
+            services.AddAuthorizationCore();
+            services.AddScoped<MmStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<MmStateProvider>());
+            services.AddScoped<IAuthService, MmAuthService>();
+
+
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
         }
