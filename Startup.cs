@@ -15,8 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorRecipeApp.Data.Interfaces;
-using BlazorRecipeApp.Data.Services;
+using BlazorRecipeApp.Services.Services;
 using BlazorRecipeApp.Models;
 
 namespace BlazorRecipeApp
@@ -34,15 +33,14 @@ namespace BlazorRecipeApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContextFactory<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
                     new MySqlServerVersion(new Version(8, 0, 25)))
                 .EnableSensitiveDataLogging(true)
             );
 
-            services.AddTransient<IRecipeService, EfRecipeServiceV1>();
-            services.AddTransient<IMenuService, EfMenuServiceV1>();
+            services.AddTransient<Services.Interfaces.IRecipeService, Services.Services.EfRecipeServiceV1>();
+            services.AddTransient<Services.Interfaces.IMenuService, Services.Services.EfMenuServiceV1>();
 
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
