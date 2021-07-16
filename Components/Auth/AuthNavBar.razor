@@ -1,0 +1,32 @@
+﻿@inject MmStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+<AuthorizeView>
+    <Authorized>
+        <li>
+            <a class="nav-link" href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        </li>
+        <li>
+            <a class="nav-link" href="#" @onclick="@LogoutClick">Logout</a>
+        </li>
+    </Authorized>
+    <NotAuthorized>
+        <li class="nav-item">
+            <a class="nav-link" href="Identity/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/login">Log in</a>
+        </li>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    async Task LogoutClick()
+    {
+        await AuthStateProvider.Logout();
+        NavManager.NavigateTo("/login");
+    }
+}

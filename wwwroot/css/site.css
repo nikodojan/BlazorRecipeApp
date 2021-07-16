@@ -7,6 +7,16 @@ html, body {
     font-weight: 300;
 }
 
+.login-input {
+    background-color: #f8f8f8;
+    border-radius: 0 !important;
+    border-width: 0 0 1px 0 !important;
+}
+
+.login-input:focus {
+    outline: none !important;
+}
+
 
 .noradius {
     border-radius: 0px;
