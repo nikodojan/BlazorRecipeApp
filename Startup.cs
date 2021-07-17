@@ -41,8 +41,9 @@ namespace BlazorRecipeApp
                 .EnableSensitiveDataLogging(true)
             );
 
-            services.AddTransient<Services.Interfaces.IRecipeService, Services.Services.EfRecipeServiceV1>();
-            services.AddTransient<Services.Interfaces.IMenuService, Services.Services.EfMenuServiceV1>();
+            services.AddTransient<IRecipeService, EfRecipeServiceV1>();
+            services.AddTransient<IMenuService, EfMenuServiceV1>();
+            services.AddTransient<IUserService, MmUserService>();
 
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),

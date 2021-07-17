@@ -1,9 +1,7 @@
 ﻿@page "/"
-@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+
 @inject MmStateProvider AuthStateProvider
 @inject NavigationManager NavManager
-
-
 
 <AuthorizeView>
     <Authorized>

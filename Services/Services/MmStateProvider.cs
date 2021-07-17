@@ -12,12 +12,12 @@ namespace BlazorRecipeApp.Services.Services
 {
     public class MmStateProvider : AuthenticationStateProvider
     {
-        private readonly IAuthService _api;
+        private readonly IAuthService _authService;
         private CurrentUser _currentUser;
 
-        public MmStateProvider(IAuthService api)
+        public MmStateProvider(IAuthService authService)
         {
-            _api = api;
+            _authService = authService;
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -41,19 +41,19 @@ namespace BlazorRecipeApp.Services.Services
         private async Task<CurrentUser> GetCurrentUser()
         {
             if (_currentUser != null && _currentUser.IsAuthenticated) return _currentUser;
-            _currentUser = await _api.CurrentUserInfo();
+            _currentUser = await _authService.CurrentUserInfo();
             return _currentUser;
         }
 
         public async Task Logout()
         {
-            await _api.Logout();
+            await _authService.Logout();
             _currentUser = null;
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
         public async Task Login(LoginRequest loginParameters)
         {
-            await _api.Login(loginParameters);
+            await _authService.Login(loginParameters);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
     }
