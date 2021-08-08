@@ -35,27 +35,46 @@
             <InputNumber @bind-Value="RecipeModel.TimeInMinutes" class="form-control noradius"/>
         </label>
     </p>
-    <div>
-        <label>Amount, Unit, Name, Description (optional)</label>
-        <div>
-            @foreach (var i in RecipeModel.Ingredients)
-            {
-                <IngredientComponent IngredientModel="i" Groceries="@GroceryList"></IngredientComponent>
-            }
+    <p>
+        <div id="oneIngredient">
+            <label>Ingredients:</label>
+            <label>Amount, Unit, Name, Description (optional)</label>
+            <div>
+                @for (int i = 0; i < RecipeModel.Ingredients.Count; i++)
+                {
+                    int index = i;
+                    <div class="m-0 p-0 d-flex flex-row align-items-center">
+                        <div>
+                            <IngredientComponent IngredientModel="RecipeModel.Ingredients[i]" Groceries="@GroceryList"></IngredientComponent>
+                        </div>
+                        <div>
+                            <IconButton Type="button"CssClass="btn-danger" Corners="noradius" OnClick="() => RemoveIngredient(index)">
+                                <span class="material-icons-outlined">
+                                    remove
+                                </span>
+                            </IconButton>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="my-2">
+                <IconButton Type="button" CssClass="btn-primary" Corners="noradius" OnClick="AddIngredient" Text="Add ingredient">
+                    <span class="material-icons-outlined">
+                        add
+                    </span>
+                </IconButton>
+            </div>
         </div>
-        <div>
-            <button type="button" class="btn btn-primary" @onclick="AddIngredient">Add ingredient</button>
-        </div>
-    </div>
+    </p>
     <p>
         <label>
             Instructions (optional):
             <InputTextArea @bind-Value="RecipeModel.Instructions" class="form-control noradius"/>
         </label>
     </p>
-
-    <button type="submit" class="btn btn-primary noradius">Save</button>
-    <button class="btn btn-outline-dark">Cancel</button>
+    <IconButton Corners="noradius" CssClass="btn-primary" Text="Save"><span class="material-icons-outlined">save_alt</span></IconButton>
+    <EasyButton.Button CssClass="btn-outline-dark" Corners="noradius">Cancel</EasyButton.Button>
+    
 
 </EditForm>
 
@@ -109,4 +128,11 @@
     {
         RecipeModel.Ingredients.Add(new Ingredient());
     }
+
+    private void RemoveIngredient(int index)
+    {
+        RecipeModel.Ingredients.RemoveAt(index);
+        StateHasChanged();
+    }
+
 }
