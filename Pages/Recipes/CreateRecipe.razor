@@ -1,7 +1,7 @@
 ﻿@page "/recipes/new"
 @page "/recipes/edit/{recipeId:int?}"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
 @inject IRecipeService RecipeService
 
 <h3>CreateRecipe</h3>
@@ -72,8 +72,8 @@
             <InputTextArea @bind-Value="RecipeModel.Instructions" class="form-control noradius"/>
         </label>
     </p>
-    <IconButton Corners="noradius" CssClass="btn-primary" Text="Save"><span class="material-icons-outlined">save_alt</span></IconButton>
-    <EasyButton.Button CssClass="btn-outline-dark" Corners="noradius">Cancel</EasyButton.Button>
+    <IconButton Corners="noradius" CssClass="btn-primary" Text="Save" Type="submit"><span class="material-icons-outlined">save_alt</span></IconButton>
+    <EasyButton.Button Type="button" CssClass="btn-outline-dark" Corners="noradius" OnClick="HandleCancelButton">Cancel</EasyButton.Button>
     
 
 </EditForm>
@@ -121,7 +121,6 @@
         {
             await RecipeService.UpdateRecipeAsync(RecipeModel);
         }
-        NavigationManager.NavigateTo($"/recipes/{RecipeModel.Id}");
     }
 
     private void AddIngredient()
@@ -133,6 +132,11 @@
     {
         RecipeModel.Ingredients.RemoveAt(index);
         StateHasChanged();
+    }
+
+    private void HandleCancelButton()
+    {
+        NavManager.NavigateTo($"/recipes/{RecipeId}");
     }
 
 }

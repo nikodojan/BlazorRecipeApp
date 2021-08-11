@@ -4,10 +4,27 @@
 <div class="row d-flex justify-content-end">
     <ul class="list-unstyled list-inline">
         <li class="list-inline-item">
-            <button type="button" class="btn btn-sm btn-outline-primary" @onclick="HandleEditButton">Edit</button>
+            @*<button type="button" class="btn btn-sm btn-outline-primary" @onclick="HandleEditButton">Edit</button>*@
+            <IconButton CssClass="btn-sm btn-outline-primary"
+                        OnClick="HandleEditButton"
+                        Text="Edit"
+                        Type="button">
+                <span class="material-icons-outlined">
+                    edit
+                </span>
+            </IconButton>
         </li>
+
         <li class="list-inline-item">
-            <button type="button" class="btn btn-sm btn-outline-danger" @onclick="()=>Modal.Open()">Delete</button>
+            @*<button type="button" class="btn btn-sm btn-outline-danger" @onclick="()=>Modal.Open()">Delete</button>*@
+            <IconButton CssClass="btn-sm btn-outline-danger"
+                        OnClick="()=>Modal.Open()"
+                        Text="Delete"
+                        Type="button">
+                <span class="material-icons-outlined">
+                    delete
+                </span>
+            </IconButton>
         </li>
     </ul>
 </div>
@@ -22,8 +39,18 @@
     </p>
     </Body>
     <Footer>
-        <button type="button" class="btn btn-danger" @onclick="HandleDeleteButton">Delete recipe</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Modal.Close()">Close</button>
+        <IconButton CssClass="btn-danger"
+                    OnClick="HandleDeleteButton"
+                    Text="Delete"
+                    Type="button">
+            <span class="material-icons-outlined">
+                delete
+            </span>
+        </IconButton>
+        <EasyButton.Button CssClass="btn-secondary"
+                    OnClick="() => Modal.Close()"
+                    Type="button">Cancel
+        </EasyButton.Button>
     </Footer>
 </Modal>
 

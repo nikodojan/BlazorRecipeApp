@@ -10,5 +10,9 @@ namespace BlazorRecipeApp.Models
     {
         public string FistName { get; set; }
         public string LastName { get; set; }
+
+        //public int SelectedMenu {get;set;}
+
+        //public List<Menu> Menus {get;set;}
     }
 }

@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using BlazorRecipeApp.Services.Services;
 using BlazorRecipeApp.Models;
 using BlazorRecipeApp.Services.Interfaces;
+using BlazorRecipeApp.Services.MenuFactory;
 
 namespace BlazorRecipeApp
 {
@@ -41,10 +42,14 @@ namespace BlazorRecipeApp
                 .EnableSensitiveDataLogging(true)
             );
 
+            // Services for MenuMaker functions
             services.AddTransient<IRecipeService, EfRecipeServiceV1>();
             services.AddTransient<IMenuService, EfMenuServiceV1>();
             services.AddTransient<IUserService, MmUserService>();
+            services.AddTransient<IMenuFactory, MenuFactory>();
 
+
+            // DbContext and Identity services
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
                     new MySqlServerVersion(new Version(8, 0, 25)))
