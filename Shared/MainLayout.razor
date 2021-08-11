@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+@inject MmStateProvider AuthStateProvider
 
 <div class="page">
     <div class="fixed-top">
@@ -11,3 +13,9 @@
         </div>
     </div>
 </div>
+
+@code
+{
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+}

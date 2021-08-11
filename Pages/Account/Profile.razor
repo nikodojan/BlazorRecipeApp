@@ -1,0 +1,51 @@
+﻿@page "/profile"
+@using System.Security.Claims
+
+@inject MmStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@inject IAuthService AuthService
+@inject IUserService UserService
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Profile</h3>
+        <p>Profile of @User.FistName @User.LastName</p>
+        
+        <p>Email-Address: @User.Email</p>
+        <p>Favorite recipes:</p>
+        <p>My menus:</p>
+    </Authorized>
+    <NotAuthorized>
+        @ErrorMessage
+    </NotAuthorized>
+    <Authorizing>
+        Loading...
+    </Authorizing>
+</AuthorizeView>
+
+
+@code {
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    public ClaimsPrincipal UserPrincipal { get; set; }
+    
+    public ApplicationUser User { get; set; } = new ApplicationUser();
+
+    public string ErrorMessage { get; set; } = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        UserPrincipal = (await AuthenticationState).User;
+
+        if (UserPrincipal != null && UserPrincipal.Identity.IsAuthenticated)
+        {
+            User = await UserService.GetUserByUsernameAsync(UserPrincipal.Identity.Name);
+        }
+        else
+        {
+            ErrorMessage = "User not found";
+        }
+    }
+
+}

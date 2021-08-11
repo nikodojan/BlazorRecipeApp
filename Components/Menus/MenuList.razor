@@ -1,0 +1,65 @@
+﻿@inject IMenuService MenuService
+@inject NavigationManager NavManager
+@inject IMenuFactory MenuFactory
+
+<div>
+    <p>Create a new menu:</p>
+    <EasyButton.IconButton Type="button" CssClass="btn-primary" Text="New menu" OnClick="@(()=>HandleCreateMenu("empty"))">
+        <span class="material-icons-outlined">
+            note_add
+        </span>
+    </EasyButton.IconButton>
+</div>
+
+<div>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        @foreach (var menu in Menus)
+        {
+            var menuId = menu.Id;
+            <tr>
+                <td>
+                    @menu.Id
+                </td>
+                <td>
+                    @menu.Name
+                    
+                </td>
+                <td>
+                    <EasyButton.Button CssClass="btn-primary" OnClick="@(() => HandleGoToButtonClick(menuId))">Open</EasyButton.Button>
+                    @*<button type="button" class="btn btn-outline-primary"
+                            @onclick="@(() => HandleGoToButtonClick(menuId))">
+                        Go to
+                    </button>*@
+                </td>
+            </tr>
+
+        }
+    </table>
+
+</div>
+
+@code {
+    [Parameter]
+    public List<Menu> Menus { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnClick { get; set; }
+
+    private async Task HandleCreateMenu(string type)
+    {
+        Menu menu = MenuFactory.CreateMenu(type); // needs to be flexible, not hardcoded
+        await MenuService.CreateMenuAsync(menu);
+        var menuList = await MenuService.GetAllMenusAsync();
+        Menus = menuList.ToList();
+        StateHasChanged();
+    }
+
+    private void HandleGoToButtonClick(int menuId)
+    {
+        NavManager.NavigateTo($"/menus/edit/{menuId}");
+    }
+}

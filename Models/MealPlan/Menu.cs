@@ -24,6 +24,8 @@ namespace BlazorRecipeApp.Models.MealPlan
 
         public string Notes { get; set; }
 
+        public DateTime CreatedDateTime { get; set; }
+
         [InverseProperty(nameof(Day.Menu))]
         public List<Day> Days { get; set; }
     }

@@ -13,7 +13,6 @@ namespace BlazorRecipeApp.Models
         public Recipe()
         {
             Ingredients = new List<Ingredient>();
-            Ingredients.Add(new Ingredient());
         }
 
         [Key]

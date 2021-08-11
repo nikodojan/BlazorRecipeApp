@@ -14,9 +14,12 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorRecipeApp.Services.Services;
 using BlazorRecipeApp.Models;
+using BlazorRecipeApp.Services.Interfaces;
+using BlazorRecipeApp.Services.MenuFactory;
 
 namespace BlazorRecipeApp
 {
@@ -39,9 +42,14 @@ namespace BlazorRecipeApp
                 .EnableSensitiveDataLogging(true)
             );
 
-            services.AddTransient<Services.Interfaces.IRecipeService, Services.Services.EfRecipeServiceV1>();
-            services.AddTransient<Services.Interfaces.IMenuService, Services.Services.EfMenuServiceV1>();
+            // Services for MenuMaker functions
+            services.AddTransient<IRecipeService, EfRecipeServiceV1>();
+            services.AddTransient<IMenuService, EfMenuServiceV1>();
+            services.AddTransient<IUserService, MmUserService>();
+            services.AddTransient<IMenuFactory, MenuFactory>();
 
+
+            // DbContext and Identity services
             services.AddDbContext<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
                     new MySqlServerVersion(new Version(8, 0, 25)))
@@ -73,7 +81,17 @@ namespace BlazorRecipeApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:44379/") });
+
+            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            services.AddOptions();
+            services.AddAuthorizationCore();
+            services.AddScoped<MmStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<MmStateProvider>());
+            services.AddScoped<IAuthService, MmAuthService>();
+
+
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
         }
