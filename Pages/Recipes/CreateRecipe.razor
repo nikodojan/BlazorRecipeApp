@@ -1,5 +1,8 @@
 ﻿@page "/recipes/new"
 @page "/recipes/edit/{recipeId:int?}"
+@using BlazorRecipeApp.Mm.Recipes.Models
+@using BlazorRecipeApp.Mm.Recipes.Services
+@using BlazorRecipeApp.Mm.Shared.Interfaces
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager NavManager
 @inject IRecipeService RecipeService

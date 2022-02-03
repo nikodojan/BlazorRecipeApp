@@ -1,5 +1,8 @@
 ﻿@page "/profile"
 @using System.Security.Claims
+@using BlazorRecipeApp.Mm.Identity.Models
+@using BlazorRecipeApp.Mm.Identity.Services
+@using BlazorRecipeApp.Mm.Shared.Interfaces
 
 @inject MmStateProvider AuthStateProvider
 @inject NavigationManager NavManager
@@ -9,7 +12,7 @@
 <AuthorizeView>
     <Authorized>
         <h3>Profile</h3>
-        <p>Profile of @User.FistName @User.LastName</p>
+        <p>Profile of @User.FirstName @User.LastName</p>
         
         <p>Email-Address: @User.Email</p>
         <p>Favorite recipes:</p>

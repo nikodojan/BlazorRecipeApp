@@ -1,4 +1,6 @@
-﻿@inject NavigationManager NavManager
+﻿@using BlazorRecipeApp.Mm.Identity.Models
+@using BlazorRecipeApp.Mm.Identity.Services
+@inject NavigationManager NavManager
 @inject MmStateProvider AuthStateProvider
 
 <div class="row justify-content-center mt-4">
@@ -16,8 +18,8 @@
             <DataAnnotationsValidator />
             <div class="row justify-content-center py-4 w-100 m-0">
                 <div class="row w-75 m-1">
-                    <InputText type="email" @bind-Value="LoginRequest.UserName" placeholder="E-Mail" class="form-control login-input w-100"></InputText>
-                    <span><ValidationMessage For="@(() => LoginRequest.UserName)" /></span>
+                    <InputText type="email" @bind-Value="LoginRequest.Email" placeholder="E-Mail" class="form-control login-input w-100"></InputText>
+                    <span><ValidationMessage For="@(() => LoginRequest.Email)" /></span>
                 </div>
 
                 <div class="row w-75 m-1">
@@ -38,7 +40,7 @@
             <div class="row justify-content-center w-100 m-0">
                 <p style="font-size: smaller;">
                     Don't have an account yet?
-                    <a href="#">Register now</a>
+                    <a href="/register">Register now</a>
                 </p>
             </div>
         </EditForm>

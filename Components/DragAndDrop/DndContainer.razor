@@ -1,4 +1,7 @@
-﻿@inject IMenuService MenuService
+﻿@using BlazorRecipeApp.Mm.MealPlans.Models
+@using BlazorRecipeApp.Mm.MealPlans.Services
+@using BlazorRecipeApp.Mm.Shared.Interfaces
+@inject IMenuService MenuService
 @inject NavigationManager NavManager
 
 
@@ -31,10 +34,9 @@
                 int day = d;
                 <div class="p-3 justify-content-start">
                     
-                    <div class="row">
-                        
+                    <div class="row">                        
                         <div class="col-12 col-md-2 justify-content-center justify-content-md-start pl-md-3">
-                            <input type="text" @bind="@Menu.Days[d].Name" class="name-input menu-name"/>
+                            <input type="text" @bind="@Menu.Days[day].Name" class="name-input menu-name"/>
                         </div>
                         <div class="col-12 col-md-auto">
                             <button type="button" class="day-button" @onclick="(e => AddMealToDay(e, day))">Add meal</button>
@@ -42,9 +44,10 @@
                         </div>
                     </div>
 
-                    @for (int m = 0; m < Menu.Days[d].Meals.Count; m++)
+                    @for (int m = 0; m < Menu.Days[day].Meals.Count; m++)
                     {
-                        <MealComponent DayIndex="@d" MealIndex="@m"></MealComponent>
+                        int meal = m;
+                        <MealComponent DayIndex="@day" MealIndex="@meal"></MealComponent>
                     }
                 </div>
                 <hr />
@@ -80,7 +83,11 @@
 
         Menu.Days[PayloadOutbound[0]].Meals[PayloadOutbound[1]].Dishes
             .Remove(toBeDeleted);
+
         StateHasChanged();
+
+        toBeDeleted = new Dish();
+        Payload = new Dish();
     }
 
     private async Task SaveMenuToDb()
@@ -115,6 +122,16 @@
     {
         Menu.Days.RemoveAt(day);
         //await MenuService.UpdateMenuAsync(Menu);
+    }
+
+    public async Task DeleteMeal(int day, int meal)
+    {
+        //Meal findMeal = Menu.Days[day].Meals[meal];
+        //Menu.Days[day].Meals.Remove(findMeal);
+        Menu.Days[day].Meals.RemoveAt(meal);
+        //await MenuService.UpdateMenuAsync(Menu);
+        
+        StateHasChanged();
     }
 
     //private async Task StartAutoSave()

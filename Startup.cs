@@ -16,10 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorRecipeApp.Services.Services;
-using BlazorRecipeApp.Models;
-using BlazorRecipeApp.Services.Interfaces;
-using BlazorRecipeApp.Services.MenuFactory;
+using BlazorRecipeApp.Mm.Identity.Models;
+using BlazorRecipeApp.Mm.Identity.Services;
+using BlazorRecipeApp.Mm.MealPlans.Services;
+using BlazorRecipeApp.Mm.Recipes.Services;
+using BlazorRecipeApp.Mm.Shared.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlazorRecipeApp
 {
@@ -36,11 +38,32 @@ namespace BlazorRecipeApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // DbContext and factory
+            // Local
             services.AddDbContextFactory<ApplicationDbContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
                     new MySqlServerVersion(new Version(8, 0, 25)))
                 .EnableSensitiveDataLogging(true)
             );
+
+            services.AddDbContext<ApplicationDbContext>(options => options
+                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
+                    new MySqlServerVersion(new Version(8, 0, 25)))
+                .EnableSensitiveDataLogging());
+
+            //    // Simply
+            //services.AddDbContextFactory<ApplicationDbContext>(options => options
+            //    .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
+            //        new MySqlServerVersion(new Version(5,7)))
+            //    .EnableSensitiveDataLogging(true)
+            //);
+
+            //services.AddDbContext<ApplicationDbContext>(options => options
+            //    .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
+            //        new MySqlServerVersion(new Version(5, 7)))
+            //    .EnableSensitiveDataLogging());
+
+
 
             // Services for MenuMaker functions
             services.AddTransient<IRecipeService, EfRecipeServiceV1>();
@@ -49,12 +72,7 @@ namespace BlazorRecipeApp
             services.AddTransient<IMenuFactory, MenuFactory>();
 
 
-            // DbContext and Identity services
-            services.AddDbContext<ApplicationDbContext>(options => options
-                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
-                    new MySqlServerVersion(new Version(8, 0, 25)))
-                .EnableSensitiveDataLogging());
-
+            // Identity services
             services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
@@ -78,22 +96,28 @@ namespace BlazorRecipeApp
                 options.Password.RequireNonAlphanumeric = false;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = false;
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
             services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:44379/") });
 
-            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddOptions();
             services.AddAuthorizationCore();
             services.AddScoped<MmStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<MmStateProvider>());
             services.AddScoped<IAuthService, MmAuthService>();
 
-
-
             services.AddDatabaseDeveloperPageExceptionFilter();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

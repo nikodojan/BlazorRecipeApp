@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using BlazorRecipeApp.Models;
-using BlazorRecipeApp.Models.MealPlan;
+using BlazorRecipeApp.Mm.Identity.Models;
+using BlazorRecipeApp.Mm.MealPlans.Models;
+using BlazorRecipeApp.Mm.Recipes.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorRecipeApp.Data

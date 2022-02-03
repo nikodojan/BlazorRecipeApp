@@ -1,11 +1,12 @@
-﻿
-
+﻿@using BlazorRecipeApp.Mm.MealPlans.Models
 <div class="row">
     <div class="col-12 col-md-2 justify-content-center justify-content-md-start pl-md-3">
         <input class="name-input" @bind="Meal.Name" />
-        <br/>
+        <br />
         <p style="font-size: 8px">(Meal index: @MealIndex,<br/> Day index: @DayIndex)</p>
+        <button type="button" class="day-button" @onclick="HandleDeleteMeal">Delete meal</button>
     </div>
+
     <div class="col-12 col-md-auto">
         <ul class="list-unstyled dropzone"
             style="min-height: 3rem"
@@ -32,6 +33,11 @@
     protected override void OnInitialized()
     {
         Meal = Container.Menu.Days[DayIndex].Meals[MealIndex];
+    }
+
+    public async Task HandleDeleteMeal()
+    {
+        await Container.DeleteMeal(DayIndex, MealIndex);
     }
 
     public void HandleDrop()

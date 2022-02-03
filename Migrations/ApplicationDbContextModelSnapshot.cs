@@ -37,7 +37,7 @@ namespace BlazorRecipeApp.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("FistName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")

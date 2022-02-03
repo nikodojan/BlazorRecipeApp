@@ -1,0 +1,86 @@
+﻿@page "/register"
+@using BlazorRecipeApp.Mm.Identity.Models
+@using BlazorRecipeApp.Mm.Identity.Services
+@inject NavigationManager NavManager
+@inject MmStateProvider AuthStateProvider
+
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-11 col-md-7 col-lg-5 d-flex flex-column align-items-center"
+             style="border-style: solid; border-width: 1px; border-radius: 0px; border-color: lightgray; max-width: 25rem; padding: 1rem 0 1rem 0;">
+
+            <div class="row w-100 justify-content-center py-2">
+                <p class="text-center font-weight-bold mb-0" style="font-size: 2rem">Register</p>
+            </div>
+
+            <div class="row w-100 justify-content-center" style="height: 75px;">
+                <img src="images/user_login.png" style="width: 5rem; height: 5rem; border-radius: 50%;" />
+            </div>
+
+            <EditForm Model="RegisterRequest" OnValidSubmit="OnSubmit">
+                <DataAnnotationsValidator />
+                <div class="row justify-content-center py-4 w-100 m-0">
+                    
+                    <div class="row w-75 m-1">
+                        <InputText type="text" @bind-Value="RegisterRequest.FirstName" placeholder="First Name (optional)" class="form-control login-input w-100"></InputText>
+                        <span><ValidationMessage For="@(() => RegisterRequest.FirstName)" /></span>
+                    </div>
+                    
+                    <div class="row w-75 m-1">
+                        <InputText type="text" @bind-Value="RegisterRequest.LastName" placeholder="Last Name (optional)" class="form-control login-input w-100"></InputText>
+                        <span><ValidationMessage For="@(() => RegisterRequest.LastName)" /></span>
+                    </div>
+
+                    <div class="row w-75 m-1">
+                        <InputText type="email" @bind-Value="RegisterRequest.Email" placeholder="E-Mail" class="form-control login-input w-100"></InputText>
+                        <span><ValidationMessage For="@(() => RegisterRequest.Email)"/></span>
+                    </div>
+
+                    <div class="row w-75 m-1">
+                        <InputText type="password" @bind-Value="RegisterRequest.Password" placeholder="Password" class="form-control login-input w-100"></InputText>
+                        <span><ValidationMessage For="@(() => RegisterRequest.Password)"/></span>
+                    </div>
+
+                    <div class="row w-75 m-1">
+                        <InputText type="password" @bind-Value="RegisterRequest.PasswordConfirm" placeholder="Confirm password" class="form-control login-input w-100"></InputText>
+                        <span><ValidationMessage For="@(() => RegisterRequest.PasswordConfirm)"/></span>
+                    </div>
+
+                    <div class="row w-75 justify-content-center m-2">
+                        <EasyButton.Button Type="submit" CssClass="btn-primary" Corners="noradius">Register</EasyButton.Button>
+                        @*<button type="submit" class="btn btn-primary noradius">Login</button>*@
+                        <span><label class="text-danger">@ErrorMessage</label></span>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center w-100 m-0">
+                    <p style="font-size: smaller;">
+                        Already have an account?
+                        <a href="/login">Login now</a>
+                    </p>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    public RegisterRequest RegisterRequest { get; set; } = new RegisterRequest();
+    
+    public string ErrorMessage { get; set; }
+
+    async Task OnSubmit()
+    {
+        ErrorMessage = null;
+        try
+        {
+            await AuthStateProvider.Register(RegisterRequest);
+            NavManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+}
+

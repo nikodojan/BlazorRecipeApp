@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorRecipeApp", "BlazorRecipeApp.csproj", "{45841D3C-4F2B-486F-81A8-3E7CE11EA2B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMServicesTestProject", "..\MMServicesTestProject\MMServicesTestProject.csproj", "{CA23AC9C-46EF-481A-8443-4D9475EE9274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MMServicesTestProject", "..\MMServicesTestProject\MMServicesTestProject.csproj", "{CA23AC9C-46EF-481A-8443-4D9475EE9274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
