@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorRecipeApp.Data;
 using BlazorRecipeApp.Mm.Recipes.Models;
+using BlazorRecipeApp.Mm.Shared.Data;
 using BlazorRecipeApp.Mm.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using BlazorRecipeApp.Mm.Identity.Models;
+﻿using BlazorRecipeApp.Mm.Identity.Models;
 using BlazorRecipeApp.Mm.MealPlans.Models;
 using BlazorRecipeApp.Mm.Recipes.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace BlazorRecipeApp.Data
+namespace BlazorRecipeApp.Mm.Shared.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {

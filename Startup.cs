@@ -1,5 +1,4 @@
 using BlazorRecipeApp.Areas.Identity;
-using BlazorRecipeApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -20,6 +19,7 @@ using BlazorRecipeApp.Mm.Identity.Models;
 using BlazorRecipeApp.Mm.Identity.Services;
 using BlazorRecipeApp.Mm.MealPlans.Services;
 using BlazorRecipeApp.Mm.Recipes.Services;
+using BlazorRecipeApp.Mm.Shared.Data;
 using BlazorRecipeApp.Mm.Shared.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
