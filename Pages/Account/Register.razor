@@ -2,7 +2,7 @@
 @using BlazorRecipeApp.Mm.Identity.Models
 @using BlazorRecipeApp.Mm.Identity.Services
 @inject NavigationManager NavManager
-@inject MmStateProvider AuthStateProvider
+@inject MmAuthenticationStateProvider _authAuthenticationStateProvider
 
 <div class="container">
     <div class="row justify-content-center mt-4">
@@ -74,7 +74,7 @@
         ErrorMessage = null;
         try
         {
-            await AuthStateProvider.Register(RegisterRequest);
+            await _authAuthenticationStateProvider.Register(RegisterRequest);
             NavManager.NavigateTo("/");
         }
         catch (Exception ex)

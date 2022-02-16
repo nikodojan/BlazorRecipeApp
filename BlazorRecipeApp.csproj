@@ -35,6 +35,7 @@
     <Folder Include="Data\" />
     <Folder Include="Mm.Identity\Data\" />
     <Folder Include="Mm.Identity\UI\" />
+    <Folder Include="_oldMigrations\" />
   </ItemGroup>
 
 </Project>

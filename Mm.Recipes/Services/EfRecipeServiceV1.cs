@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorRecipeApp.Mm.Recipes.Models;
 using BlazorRecipeApp.Mm.Shared.Data;
@@ -18,34 +19,47 @@ namespace BlazorRecipeApp.Mm.Recipes.Services
             _context = factory.CreateDbContext();
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipesAsync()
+        public async Task<IEnumerable<Recipe>> GetAllRecipesAsync()
         {
-            //using (var ctx = _factory.CreateDbContext())
-            //{
-            //    var recipes = await ctx.Recipes.ToListAsync();
-            //    return recipes;
-            //}
-
-            var recipes = await _context.Recipes.ToListAsync();
+            var recipes = await _context.Recipes.Include(r=>r.Ingredients).ToListAsync();
             return recipes;
         }
 
-        public async Task<Recipe> GetRecipeByIdAsync(int? recipeId)
+        public async Task<Recipe> GetRecipeByIdAsync(int recipeId)
         {
-            if (recipeId == null) return new Recipe() {Id = 0, Title = "No recipe found", Description = ""};
-            //using (var ctx = _factory.CreateDbContext())
-            //{
-            //    Recipe recipe = await ctx.Recipes
-            //        .Include(r=>r.Ingredients)
-            //        .FirstOrDefaultAsync(r => r.Id == recipeId);
-            //    return recipe ?? new Recipe() { Id = 0, Title = "Recipe not found", Instructions = string.Empty };
-            //}
-
             Recipe recipe = await _context.Recipes
                 .Include(r => r.Ingredients)
                 .FirstOrDefaultAsync(r => r.Id == recipeId);
             return recipe ?? new Recipe() { Id = 0, Title = "Recipe not found", Instructions = string.Empty };
         }
+
+        public async Task<IEnumerable<Recipe>> GetByTitleAsync(string title)
+        {
+            return await _context.Recipes
+                .Include(r => r.Ingredients)
+                .Where(r => r.Title.Contains(title))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetAllTitlesAsync()
+        {
+            return await _context.Recipes.Select(r => r.Title).ToListAsync();
+        }
+        public async Task<IEnumerable<object>> GetAllShortAsync()
+        {
+            return await _context.Recipes.Select(r =>
+                new
+                {
+                    Id = r.Id,
+                    Title = r.Title,
+                    Description = r.Description,
+                    ImgPath = r.ImgPath,
+                    Portions = r.Portions,
+                    Time = r.TimeInMinutes
+                }).ToListAsync();
+        }
+
+
 
         public async Task AddRecipeAsync(Recipe recipe)
         {

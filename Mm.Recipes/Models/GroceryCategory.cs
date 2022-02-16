@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorRecipeApp.Mm.Recipes.Models
 {
-    [Table("GroceryCategory")]
+    [Table("grocerycategory")]
     public class GroceryCategory
     {
         public GroceryCategory()

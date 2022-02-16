@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace BlazorRecipeApp.Mm.MealPlans.Models
 {
-    [Table("Meal")]
+    [Table("meal")]
     public class Meal
     { public Meal()
         {

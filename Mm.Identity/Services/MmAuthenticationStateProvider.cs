@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorRecipeApp.Mm.Identity.Services
 {
-    public class MmStateProvider : AuthenticationStateProvider
+    public class MmAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly IAuthService _authService;
         private CurrentUser _currentUser;
 
-        public MmStateProvider(IAuthService authService)
+        public MmAuthenticationStateProvider(IAuthService authService)
         {
             _authService = authService;
         }

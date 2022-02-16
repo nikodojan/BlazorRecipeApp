@@ -5,7 +5,7 @@ using BlazorRecipeApp.Mm.Recipes.Models;
 
 namespace BlazorRecipeApp.Mm.MealPlans.Models
 {
-    [Table("Dish")]
+    [Table("dish")]
     public class Dish
     {
         [Key]

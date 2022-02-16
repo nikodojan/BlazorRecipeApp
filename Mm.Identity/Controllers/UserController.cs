@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorRecipeApp.Mm.Identity.Controllers
 {
-    //[Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace BlazorRecipeApp.Mm.Identity.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpGet("api/user/{username}")]
+        [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUsernameAsync(string username)
         {
             var user = await _userManager.FindByNameAsync(username);

@@ -22,6 +22,7 @@ using BlazorRecipeApp.Mm.Recipes.Services;
 using BlazorRecipeApp.Mm.Shared.Data;
 using BlazorRecipeApp.Mm.Shared.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace BlazorRecipeApp
 {
@@ -38,30 +39,38 @@ namespace BlazorRecipeApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("All", builder => 
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+                
             // DbContext and factory
             // Local
-            services.AddDbContextFactory<ApplicationDbContext>(options => options
-                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
-                    new MySqlServerVersion(new Version(8, 0, 25)))
-                .EnableSensitiveDataLogging(true)
-            );
-
-            services.AddDbContext<ApplicationDbContext>(options => options
-                .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
-                    new MySqlServerVersion(new Version(8, 0, 25)))
-                .EnableSensitiveDataLogging());
-
-            //    // Simply
             //services.AddDbContextFactory<ApplicationDbContext>(options => options
-            //    .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
-            //        new MySqlServerVersion(new Version(5,7)))
+            //    .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
+            //        new MySqlServerVersion(new Version(8, 0, 25)))
             //    .EnableSensitiveDataLogging(true)
             //);
 
             //services.AddDbContext<ApplicationDbContext>(options => options
-            //    .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
-            //        new MySqlServerVersion(new Version(5, 7)))
+            //    .UseMySql(Configuration.GetConnectionString("LocalMySQL"),
+            //        new MySqlServerVersion(new Version(8, 0, 25)))
             //    .EnableSensitiveDataLogging());
+
+            //    // Simply
+            services.AddDbContextFactory<ApplicationDbContext>(options => options
+                .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
+                    new MySqlServerVersion(new Version(5, 7)))
+                .EnableSensitiveDataLogging(true)
+            );
+
+            services.AddDbContext<ApplicationDbContext>(options => options
+                .UseMySql(Configuration.GetConnectionString("SimplyMmDb"),
+                    new MySqlServerVersion(new Version(5, 7)))
+                .EnableSensitiveDataLogging());
 
 
 
@@ -109,12 +118,13 @@ namespace BlazorRecipeApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:44379/") });
+            services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:5001/") });
+            
 
             services.AddOptions();
             services.AddAuthorizationCore();
-            services.AddScoped<MmStateProvider>();
-            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<MmStateProvider>());
+            services.AddScoped<MmAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<MmAuthenticationStateProvider>());
             services.AddScoped<IAuthService, MmAuthService>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -139,6 +149,7 @@ namespace BlazorRecipeApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            //app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

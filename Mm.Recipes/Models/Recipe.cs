@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorRecipeApp.Mm.Recipes.Models
 {
-    [Table("Recipe")]
+    [Table("recipe")]
     public class Recipe
     {
         public Recipe()
@@ -22,7 +22,7 @@ namespace BlazorRecipeApp.Mm.Recipes.Models
         [StringLength(100)]
         public string Description { get; set; }
 
-        [StringLength(50)]
+        [StringLength(300)]
         public string ImgPath { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace BlazorRecipeApp.Mm.Recipes.Models
 
         public int? TimeInMinutes { get; set; }
 
-        [InverseProperty(nameof(Ingredient.Recipe))]
+        //[InverseProperty(nameof(Ingredient.Recipe))]
         public virtual List<Ingredient> Ingredients { get; set; }
 
         public override string ToString()

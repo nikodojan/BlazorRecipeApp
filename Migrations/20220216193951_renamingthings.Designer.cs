@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlazorRecipeApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210708062624_deleteDish")]
-    partial class deleteDish
+    [Migration("20220216193951_renamingthings")]
+    partial class renamingthings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,7 @@ namespace BlazorRecipeApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.7");
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Identity.Models.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace BlazorRecipeApp.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("FistName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
@@ -90,7 +90,94 @@ namespace BlazorRecipeApp.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.Grocery", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Day", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("day");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Dish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("MealId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("dish");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Meal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("DayId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DayId");
+
+                    b.ToTable("meal");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("menu");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Grocery", b =>
                 {
                     b.Property<string>("GroceryName")
                         .HasMaxLength(50)
@@ -103,10 +190,10 @@ namespace BlazorRecipeApp.Migrations
 
                     b.HasIndex("Category");
 
-                    b.ToTable("Grocery");
+                    b.ToTable("grocery");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.GroceryCategory", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.GroceryCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,10 +206,10 @@ namespace BlazorRecipeApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GroceryCategory");
+                    b.ToTable("grocerycategory");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.Ingredient", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Ingredient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,94 +237,10 @@ namespace BlazorRecipeApp.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("ingredient");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Day", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("Day");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Dish", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MealId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Dish");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Meal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DayId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DayId");
-
-                    b.ToTable("Meal");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Menu");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.Recipe", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -269,7 +272,7 @@ namespace BlazorRecipeApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Recipe");
+                    b.ToTable("recipe");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -346,10 +349,10 @@ namespace BlazorRecipeApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext");
@@ -385,10 +388,10 @@ namespace BlazorRecipeApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("Value")
                         .HasColumnType("longtext");
@@ -398,31 +401,9 @@ namespace BlazorRecipeApp.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.Grocery", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Day", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.GroceryCategory", "CategoryNavigation")
-                        .WithMany("Groceries")
-                        .HasForeignKey("Category")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CategoryNavigation");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.Ingredient", b =>
-                {
-                    b.HasOne("BlazorRecipeApp.Models.Recipe", "Recipe")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Day", b =>
-                {
-                    b.HasOne("BlazorRecipeApp.Models.MealPlan.Menu", "Menu")
+                    b.HasOne("BlazorRecipeApp.Mm.MealPlans.Models.Menu", "Menu")
                         .WithMany("Days")
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -431,15 +412,15 @@ namespace BlazorRecipeApp.Migrations
                     b.Navigation("Menu");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Dish", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Dish", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.MealPlan.Meal", "Meal")
+                    b.HasOne("BlazorRecipeApp.Mm.MealPlans.Models.Meal", "Meal")
                         .WithMany("Dishes")
                         .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorRecipeApp.Models.Recipe", "Recipe")
+                    b.HasOne("BlazorRecipeApp.Mm.Recipes.Models.Recipe", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId");
 
@@ -448,15 +429,35 @@ namespace BlazorRecipeApp.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Meal", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Meal", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.MealPlan.Day", "Day")
+                    b.HasOne("BlazorRecipeApp.Mm.MealPlans.Models.Day", "Day")
                         .WithMany("Meals")
                         .HasForeignKey("DayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Day");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Grocery", b =>
+                {
+                    b.HasOne("BlazorRecipeApp.Mm.Recipes.Models.GroceryCategory", "CategoryNavigation")
+                        .WithMany("Groceries")
+                        .HasForeignKey("Category")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryNavigation");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Ingredient", b =>
+                {
+                    b.HasOne("BlazorRecipeApp.Mm.Recipes.Models.Recipe", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -470,7 +471,7 @@ namespace BlazorRecipeApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.ApplicationUser", null)
+                    b.HasOne("BlazorRecipeApp.Mm.Identity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -479,7 +480,7 @@ namespace BlazorRecipeApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.ApplicationUser", null)
+                    b.HasOne("BlazorRecipeApp.Mm.Identity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,7 +495,7 @@ namespace BlazorRecipeApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorRecipeApp.Models.ApplicationUser", null)
+                    b.HasOne("BlazorRecipeApp.Mm.Identity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -503,34 +504,34 @@ namespace BlazorRecipeApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("BlazorRecipeApp.Models.ApplicationUser", null)
+                    b.HasOne("BlazorRecipeApp.Mm.Identity.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.GroceryCategory", b =>
-                {
-                    b.Navigation("Groceries");
-                });
-
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Day", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Day", b =>
                 {
                     b.Navigation("Meals");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Meal", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Meal", b =>
                 {
                     b.Navigation("Dishes");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.MealPlan.Menu", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.MealPlans.Models.Menu", b =>
                 {
                     b.Navigation("Days");
                 });
 
-            modelBuilder.Entity("BlazorRecipeApp.Models.Recipe", b =>
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.GroceryCategory", b =>
+                {
+                    b.Navigation("Groceries");
+                });
+
+            modelBuilder.Entity("BlazorRecipeApp.Mm.Recipes.Models.Recipe", b =>
                 {
                     b.Navigation("Ingredients");
                 });

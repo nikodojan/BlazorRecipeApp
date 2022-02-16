@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace BlazorRecipeApp.Mm.Recipes.Models
 {
-    [Table("Ingredient")]
+    [Table("ingredient")]
     public class Ingredient
     {
         [Key]
@@ -21,10 +22,14 @@ namespace BlazorRecipeApp.Mm.Recipes.Models
         [StringLength(50)]
         public string Description { get; set; }
 
+        [StringLength(50)]
+        public string PartOfDish { get; set; }
+
         public int RecipeId { get; set; }
 
-        [ForeignKey(nameof(RecipeId))]
-        [InverseProperty("Ingredients")]
-        public virtual Recipe Recipe { get; set; }
+        //[ForeignKey(nameof(RecipeId))]
+        //[InverseProperty("Ingredients")]
+        //[JsonIgnore]
+        //public virtual Recipe Recipe { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorRecipeApp.Mm.MealPlans.Models
 {
-    [Table("Menu")]
+    [Table("menu")]
     public class Menu
     {
         public Menu()
