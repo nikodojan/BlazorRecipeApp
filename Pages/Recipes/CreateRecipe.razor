@@ -119,7 +119,8 @@
 
         if (RecipeId is null)
         {
-            await RecipeService.AddRecipeAsync(RecipeModel);
+            int recipeId = await RecipeService.AddRecipeAsync(RecipeModel);
+            NavManager.NavigateTo($"/recipes/{recipeId}");
         }
         else
         {

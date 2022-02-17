@@ -55,7 +55,7 @@ namespace BlazorRecipeApp.Mm.Api
             return Ok(await _service.GetAllTitlesAsync());
         }
 
-        [HttpGet("quickinfo")]
+        [HttpGet("shortinfo")]
         [EnableCors("All")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<object>>> GetRecipeQuickInfo()
@@ -82,7 +82,7 @@ namespace BlazorRecipeApp.Mm.Api
             return Ok(await _service.GetByTitleAsync(title));
         }
 
-        // POST api/<RecipesController>
+        
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -90,12 +90,12 @@ namespace BlazorRecipeApp.Mm.Api
         public async Task<ActionResult<Recipe>> Post([FromBody] Recipe recipe)
         {
             var result = _service.AddRecipeAsync(recipe);
-            if (result is null) return Conflict("An error occured. Recipe couldn't be added.");
+            if (result is null) return Conflict("An error occurred. Recipe couldn't be added.");
             var url = Request.Path;
             return Created(url + result.Id.ToString(), result);
         }
 
-        // PUT api/<RecipesController>/5
+        
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

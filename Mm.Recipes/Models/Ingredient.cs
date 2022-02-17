@@ -26,10 +26,5 @@ namespace BlazorRecipeApp.Mm.Recipes.Models
         public string PartOfDish { get; set; }
 
         public int RecipeId { get; set; }
-
-        //[ForeignKey(nameof(RecipeId))]
-        //[InverseProperty("Ingredients")]
-        //[JsonIgnore]
-        //public virtual Recipe Recipe { get; set; }
     }
 }

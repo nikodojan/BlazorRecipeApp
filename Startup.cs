@@ -116,16 +116,14 @@ namespace BlazorRecipeApp
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
-
-                
             });
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:5001/") });
+            //services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:5001/") });
             
-            //services.AddTransient(sp => new HttpClient() { BaseAddress = new Uri("https://blazormenumaker.azurewebsites.net/") });
+            services.AddTransient(sp => new HttpClient() { BaseAddress = new Uri("https://blazormenumaker.azurewebsites.net/") });
 
 
             services.AddOptions();
@@ -156,7 +154,7 @@ namespace BlazorRecipeApp
             app.UseStaticFiles();
 
             app.UseRouting();
-            //app.UseCors();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

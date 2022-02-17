@@ -13,7 +13,7 @@ namespace BlazorRecipeApp.Mm.Shared.Interfaces
         Task<IEnumerable<string>> GetAllTitlesAsync();
 
         Task<IEnumerable<object>> GetAllShortAsync();
-        Task AddRecipeAsync(Recipe recipe);
+        Task<int> AddRecipeAsync(Recipe recipe);
         Task DeleteRecipeAsync(Recipe recipe);
         Task UpdateRecipeAsync(Recipe recipe);
     }

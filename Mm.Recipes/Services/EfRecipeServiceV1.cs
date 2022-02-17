@@ -61,16 +61,11 @@ namespace BlazorRecipeApp.Mm.Recipes.Services
 
 
 
-        public async Task AddRecipeAsync(Recipe recipe)
+        public async Task<int> AddRecipeAsync(Recipe recipe)
         {
-            //using (var ctx = _factory.CreateDbContext())
-            //{
-            //    ctx.Recipes.Add(recipe);
-            //    await ctx.SaveChangesAsync();
-            //}
-
-            _context.Recipes.Add(recipe);
+            var result = _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
+            return result.Entity.Id;
         }
 
         public async Task DeleteRecipeAsync(Recipe recipe)
