@@ -85,12 +85,12 @@ namespace BlazorRecipeApp
             services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
-
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultUI();
+            
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -103,16 +103,21 @@ namespace BlazorRecipeApp
                 options.Password.RequiredLength = 4;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            });
 
+                
+            });
+            
             services.ConfigureApplicationCookie(options =>
             {
+                options.Cookie.Name = "MMCookie";
                 options.Cookie.HttpOnly = false;
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+
+                
             });
 
             services.AddRazorPages();
@@ -120,6 +125,8 @@ namespace BlazorRecipeApp
 
             services.AddTransient(sp => new HttpClient(){BaseAddress = new Uri("https://localhost:5001/") });
             
+            //services.AddTransient(sp => new HttpClient() { BaseAddress = new Uri("https://blazormenumaker.azurewebsites.net/") });
+
 
             services.AddOptions();
             services.AddAuthorizationCore();
@@ -150,7 +157,6 @@ namespace BlazorRecipeApp
 
             app.UseRouting();
             //app.UseCors();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

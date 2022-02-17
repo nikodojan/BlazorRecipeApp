@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorRecipeApp.Mm.Identity.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,17 @@ namespace BlazorRecipeApp.Mm.Identity.Controllers
             if (user == null) return BadRequest("User does not exist");
             var singInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             if (!singInResult.Succeeded) return BadRequest("Invalid password");
-            await _signInManager.SignInAsync(user, request.RememberMe);
+            //await _signInManager.SignInAsync(user, request.RememberMe);
+
+            var authenticationProperties = new AuthenticationProperties()
+            {
+                IsPersistent = request.RememberMe, 
+                ExpiresUtc = DateTimeOffset.UtcNow.AddYears(1)
+            };
+
+            await _signInManager.SignInAsync(user, authenticationProperties);
+
+
             return Ok();
         }
 
@@ -70,6 +82,14 @@ namespace BlazorRecipeApp.Mm.Identity.Controllers
                 UserName = User.Identity.Name,
                 Claims = User.Claims
                     .ToDictionary(c => c.Type, c => c.Value)
+            };
+        }
+
+        private AuthenticationProperties GetAuthenticationProperties(bool isPersistent)
+        {
+            return new AuthenticationProperties()
+            {
+                IsPersistent = isPersistent
             };
         }
     }

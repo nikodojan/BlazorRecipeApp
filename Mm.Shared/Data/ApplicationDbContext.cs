@@ -1,6 +1,9 @@
-﻿using BlazorRecipeApp.Mm.Identity.Models;
+﻿using System.Threading.Tasks;
+using BlazorRecipeApp.Mm.Identity.Models;
 using BlazorRecipeApp.Mm.MealPlans.Models;
 using BlazorRecipeApp.Mm.Recipes.Models;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -57,5 +60,6 @@ namespace BlazorRecipeApp.Mm.Shared.Data
                 entity.ToTable("UserTokens");
             });
         }
+
     }
 }
