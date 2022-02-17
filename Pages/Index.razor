@@ -1,6 +1,7 @@
 ﻿@page "/"
+@using BlazorRecipeApp.Mm.Identity.Services
 
-@inject MmStateProvider AuthStateProvider
+@inject MmAuthenticationStateProvider _authAuthenticationStateProvider
 @inject NavigationManager NavManager
 
 <AuthorizeView>
@@ -26,7 +27,7 @@ Welcome to MenuMaker.
     
     async Task LogoutClick()
     {
-        await AuthStateProvider.Logout();
+        await _authAuthenticationStateProvider.Logout();
         NavManager.NavigateTo("/login");
     }
 }

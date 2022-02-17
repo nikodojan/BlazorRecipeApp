@@ -1,6 +1,4 @@
 ﻿using System;
-using BlazorRecipeApp.Data;
-using BlazorRecipeApp.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;

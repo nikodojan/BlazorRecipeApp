@@ -1,4 +1,7 @@
-﻿@inject IMenuService MenuService
+﻿@using BlazorRecipeApp.Mm.MealPlans.Models
+@using BlazorRecipeApp.Mm.MealPlans.Services
+@using BlazorRecipeApp.Mm.Shared.Interfaces
+@inject IMenuService MenuService
 @inject NavigationManager NavManager
 @inject IMenuFactory MenuFactory
 
@@ -15,25 +18,27 @@
     <table>
         <tr>
             <th>Id</th>
+            <th>Date</th>
             <th>Name</th>
+            <th>Options</th>
         </tr>
-        @foreach (var menu in Menus)
+        @foreach (var m in Menus)
         {
-            var menuId = menu.Id;
+            var menu = m;
             <tr>
                 <td>
                     @menu.Id
+                </td>
+                <td>
+                    @menu.CreatedDateTime.ToString("dd.MM.yyyy HH:mm")
                 </td>
                 <td>
                     @menu.Name
                     
                 </td>
                 <td>
-                    <EasyButton.Button CssClass="btn-primary" OnClick="@(() => HandleGoToButtonClick(menuId))">Open</EasyButton.Button>
-                    @*<button type="button" class="btn btn-outline-primary"
-                            @onclick="@(() => HandleGoToButtonClick(menuId))">
-                        Go to
-                    </button>*@
+                    <EasyButton.Button CssClass="btn-primary" OnClick="@(() => HandleGoToButtonClick(menu.Id))">Open</EasyButton.Button>
+                    <EasyButton.Button CssClass="btn-outline-danger" OnClick="@(() => HandleDeleteButton(menu))" >Delete</EasyButton.Button>
                 </td>
             </tr>
 
@@ -46,20 +51,32 @@
     [Parameter]
     public List<Menu> Menus { get; set; }
 
-    [Parameter]
-    public EventCallback<int> OnClick { get; set; }
+    //[Parameter]
+    //public EventCallback<int> OnClick { get; set; }
 
     private async Task HandleCreateMenu(string type)
     {
         Menu menu = MenuFactory.CreateMenu(type); // needs to be flexible, not hardcoded
         await MenuService.CreateMenuAsync(menu);
-        var menuList = await MenuService.GetAllMenusAsync();
-        Menus = menuList.ToList();
+        await RefreshMenuList();
         StateHasChanged();
     }
 
     private void HandleGoToButtonClick(int menuId)
     {
         NavManager.NavigateTo($"/menus/edit/{menuId}");
+    }
+
+    private async Task HandleDeleteButton(Menu menu)
+    {
+        await MenuService.DeleteMenuAsync(menu);
+        await RefreshMenuList();
+        StateHasChanged();
+    }
+
+    private async Task RefreshMenuList()
+    {
+        var menuList = await MenuService.GetAllMenusAsync();
+        Menus = menuList.ToList();
     }
 }

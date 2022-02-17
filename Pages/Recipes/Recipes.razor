@@ -1,6 +1,9 @@
 ﻿@page "/recipes/allrecipes"
 @page "/recipes"
-@using BlazorRecipeApp.Services.Interfaces
+@using BlazorRecipeApp.Mm.Recipes.Models
+@using BlazorRecipeApp.Mm.Recipes.Services
+@using BlazorRecipeApp.Mm.Shared.Data
+@using BlazorRecipeApp.Mm.Shared.Interfaces
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject IRecipeService RecipeService
 
@@ -26,7 +29,7 @@
         //{
         //    AllRecipes = await context.Recipes.ToListAsync();
         //}
-        AllRecipes = await RecipeService.GetRecipesAsync();
+        AllRecipes = await RecipeService.GetAllRecipesAsync();
     }
 
 
