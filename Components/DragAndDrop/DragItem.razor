@@ -1,5 +1,4 @@
-﻿@using BlazorRecipeApp.Mm.MealPlans.Models
-<li draggable="true"
+﻿<li draggable="true"
     @ondragstart="@(() => HandleDragStart(DDish))"
     @ondragend="@HandleDragEnd"
     title="@DDish.Text">
@@ -17,7 +16,7 @@
 </li>
 
 @code {
-    [CascadingParameter] DndContainer Container { get; set; }
+    [CascadingParameter] MenuStateContainer Container { get; set; }
 
     [Parameter] public Dish DDish { get; set; }
     [Parameter] public int DayIndex { get; set; }

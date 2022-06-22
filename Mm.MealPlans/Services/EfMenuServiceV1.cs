@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorRecipeApp.Mm.MealPlans.Models;
 using BlazorRecipeApp.Mm.Shared.Data;
@@ -54,6 +56,34 @@ namespace BlazorRecipeApp.Mm.MealPlans.Services
         {
             _context.Menus.Remove(menu);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task AddDish(int recipeId)
+        {
+            try
+            {
+                Console.WriteLine("Recipe id " + recipeId);
+                Menu menu = _context.Menus.Include(menu => menu.Days)
+                    .ThenInclude(day => day.Meals)
+                    .ThenInclude(meal => meal.Dishes)
+                    .ThenInclude(dish => dish.Recipe)
+                    .ToList()[^1];
+                
+
+                Console.WriteLine("Menu id " + menu.Id);
+                Dish dish = new Dish();
+                dish.RecipeId = recipeId;
+                // TODO: Add error handling: If menu doesn't contain days or meals,
+                // throw exxception .. custom exception?
+                menu.Days[0].Meals[0].Dishes.Add(dish);
+
+                await UpdateMenuAsync(menu);
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
         }
     }
 }

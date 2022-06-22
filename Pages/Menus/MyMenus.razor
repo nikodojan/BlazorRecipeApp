@@ -8,6 +8,8 @@
 
 <h3>MyMenus</h3>
 
+
+
 <MenuList Menus="Menus"></MenuList>
 
 
@@ -15,11 +17,14 @@
 @code {
     public List<Menu> Menus { get; set; } = new List<Menu>();
 
+
+
     protected override async Task OnParametersSetAsync()
     {
         var menuList = await MenuService.GetAllMenusAsync();
         Menus = menuList.ToList();
     }
+
 
 
 } 

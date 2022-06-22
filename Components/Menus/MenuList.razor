@@ -6,12 +6,21 @@
 @inject IMenuFactory MenuFactory
 
 <div>
+    
+    <div>
+        <select @bind="Type">
+            <option value=@MenuType.Empty>Empty</option>
+            <option value=@MenuType.Week>Week</option>
+        </select>
+        <button type="button" @onclick="@OnNewMenuButtonClick">New Menu</button>
+    </div>
+
     <p>Create a new menu:</p>
-    <EasyButton.IconButton Type="button" CssClass="btn-primary" Text="New menu" OnClick="@(()=>HandleCreateMenu("empty"))">
+    @*<EasyButton.IconButton Type="button" CssClass="btn-primary" Text="New menu" OnClick="@(() => HandleCreateMenu(MenuType.Empty))">
         <span class="material-icons-outlined">
             note_add
         </span>
-    </EasyButton.IconButton>
+    </EasyButton.IconButton>*@
 </div>
 
 <div>
@@ -51,12 +60,15 @@
     [Parameter]
     public List<Menu> Menus { get; set; }
 
+    private MenuType Type { get; set; }
+
     //[Parameter]
     //public EventCallback<int> OnClick { get; set; }
 
-    private async Task HandleCreateMenu(string type)
+
+    private async Task OnNewMenuButtonClick()
     {
-        Menu menu = MenuFactory.CreateMenu(type); // needs to be flexible, not hardcoded
+        Menu menu = MenuFactory.CreateMenu(Type);
         await MenuService.CreateMenuAsync(menu);
         await RefreshMenuList();
         StateHasChanged();

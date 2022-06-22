@@ -1,0 +1,21 @@
+﻿@inject IMenuService MenuService
+
+@for (int d = 0; d < Menu.Days.Count; d++)
+{
+    int dayIndex = d;
+    <DayComponent DayIndex="dayIndex" 
+                  @key="@Container.GetElementKey()"
+                  OnDayDelete=@DeleteDay/>
+    <hr />
+}
+
+@code {
+    [CascadingParameter] MenuStateContainer Container { get; set; }
+    [Parameter] public Menu Menu { get; set; } = new Menu();
+
+    private void DeleteDay(int dayIndex)
+    {
+        Menu.Days.RemoveAt(dayIndex);
+        StateHasChanged();
+    }
+}
