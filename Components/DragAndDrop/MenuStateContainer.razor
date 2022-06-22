@@ -1,0 +1,108 @@
+﻿@inject IMenuService MenuService
+@inject NavigationManager NavManager
+
+<div class="dad-container">
+    <div class="row p-2">
+        <div class="col">
+            <input type="text" @bind="Menu.Name" class="name-input menu-name" />
+            @*@if (IsSaving)
+                    {
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="sr-only">Saving...</span>
+                        </div>
+                    }*@
+        </div>
+
+        <div class="col text-right">
+            <button type="button" class="btn btn-outline-success dnd-button" @onclick="AddDay">Add day</button>
+
+            <button type="button" class="btn btn-outline-danger dnd-button" @onclick="DeleteMenu">Delete menu</button>
+
+            <button type="button" class="btn btn-outline-primary dnd-button" @onclick="SaveMenuToDb">Save</button>
+        </div>
+        <hr />
+    </div>
+    
+    <div class="row p-2 w-100">
+        <CascadingValue Value="this">
+            <MenuComponent Menu="Menu"></MenuComponent>
+        </CascadingValue>
+    </div>
+            
+    
+</div>
+
+@code {
+    // Component that contains the menu
+    // Serves as state container
+    // Is passed as cascading value to the children
+    // Responsible for updating the components after drag and drop
+    // Other Update and Delete functions to the Db 
+    
+    [Parameter] public int MenuId { get; set; }
+
+    public Menu Menu { get; set; } = new Menu();
+
+    public Dish Payload { get; set; } = new Dish();
+    public int[] PayloadOutbound { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Menu = await MenuService.GetMenuByIdAsync(MenuId);
+    }
+
+    public void UpdateMenuOnDrop()
+    {
+        Dish toBeDeleted = Menu.Days[PayloadOutbound[0]].Meals[PayloadOutbound[1]].Dishes
+            .Find(dish => dish == Payload);
+
+        Menu.Days[PayloadOutbound[0]].Meals[PayloadOutbound[1]].Dishes
+            .Remove(toBeDeleted);
+
+        StateHasChanged();
+
+        toBeDeleted = new Dish();
+        Payload = new Dish();
+    }
+
+    
+    private async Task AddDay()
+    {
+        Day newDay = new Day() { Name = "Untitled day" };
+        Meal newMeal = new Meal() { Name = "Untitled meal" };
+        newDay.Meals.Add(newMeal);
+        Menu.Days.Add(newDay);
+    //await MenuService.UpdateMenuAsync(Menu);
+    }
+
+    private async Task SaveMenuToDb()
+    {
+        await MenuService.UpdateMenuAsync(Menu);
+        StateHasChanged();
+    }
+
+    private async Task DeleteMenu()
+    {
+
+    }
+
+    //private async Task StartAutoSave()
+    //{
+    //    await Task.Delay(10000);
+    //    IsSaving = true;
+    //    StateHasChanged();
+    //    await SaveMenuToDb();
+    //    IsSaving = false;
+    //    StateHasChanged();
+    //    await StartAutoSave();
+    //}
+
+    /// <summary>
+    /// Generates keys for collection items (Days, Meals)
+    /// </summary>
+    /// <returns></returns>
+    public string GetElementKey()
+    {
+        return Guid.NewGuid().ToString();
+    }
+}

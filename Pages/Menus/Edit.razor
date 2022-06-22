@@ -1,26 +1,13 @@
 ﻿@page "/menus/edit/{menuId:int}"
-@using BlazorRecipeApp.Mm.MealPlans.Models
-@using BlazorRecipeApp.Mm.MealPlans.Services
-@using BlazorRecipeApp.Mm.Shared.Interfaces
-
 @inject IMenuService MenuService
 <h3>Edit</h3>
 
-@if (Menu != null)
-{
-    <DndContainer MenuId="MenuId"></DndContainer>
-}
+<MenuStateContainer MenuId="MenuId"></MenuStateContainer>
 
-@code {
+@code 
+{
     [Parameter]
     public int MenuId { get; set; }
-
-    public Menu Menu { get; set; }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        Menu = await MenuService.GetMenuByIdAsync(MenuId);
-        StateHasChanged();
-    }
-
 }
+
+

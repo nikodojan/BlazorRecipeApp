@@ -13,5 +13,7 @@ namespace BlazorRecipeApp.Mm.Shared.Interfaces
         Task UpdateMenuAsync(Menu menu);
 
         Task DeleteMenuAsync(Menu menu);
+
+        Task AddDish(int recipeId);
     }
 }

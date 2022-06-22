@@ -1,13 +1,12 @@
-﻿@using BlazorRecipeApp.Mm.MealPlans.Models
-<div class="row">
-    <div class="col-12 col-md-2 justify-content-center justify-content-md-start pl-md-3">
+﻿<div class="row w-100">
+    <div class="col-12 col-md-3 justify-content-center justify-content-md-start pl-md-3">
         <input class="name-input" @bind="Meal.Name" />
         <br />
         <p style="font-size: 8px">(Meal index: @MealIndex,<br/> Day index: @DayIndex)</p>
-        <button type="button" class="day-button" @onclick="HandleDeleteMeal">Delete meal</button>
+        <button type="button" class="day-button" @onclick="OnDeleteMeal_Click">Delete meal</button>
     </div>
 
-    <div class="col-12 col-md-auto">
+    <div class="col-12 col-md-8">
         <ul class="list-unstyled dropzone"
             style="min-height: 3rem"
             ondragover="event.preventDefault();"
@@ -16,7 +15,10 @@
 
             @foreach (var dish in Meal.Dishes)
             {
-                <DndItem DDish="@dish" DayIndex="@DayIndex" MealIndex="@MealIndex" />
+                <DragItem DDish="@dish" 
+                          DayIndex="@DayIndex" 
+                          MealIndex="@MealIndex" 
+                          @key="@Container.GetElementKey()"/>
             }
 
         </ul>
@@ -24,27 +26,28 @@
 </div>
 
 @code {
-    [CascadingParameter] DndContainer Container { get; set; }
+    [CascadingParameter] MenuStateContainer Container { get; set; }
 
     public Meal Meal { get; set; }
     [Parameter] public int DayIndex { get; set; }
     [Parameter] public int MealIndex { get; set; }
 
-    protected override void OnInitialized()
+    [Parameter] public EventCallback<int> OnMealDelete { get; set; }
+
+    protected override void OnParametersSet()
     {
         Meal = Container.Menu.Days[DayIndex].Meals[MealIndex];
     }
 
-    public async Task HandleDeleteMeal()
+    public async Task OnDeleteMeal_Click()
     {
-        await Container.DeleteMeal(DayIndex, MealIndex);
+        await OnMealDelete.InvokeAsync(MealIndex);
     }
 
     public void HandleDrop()
     {
         Container.Payload.MealId = this.Meal.Id;
         Meal.Dishes.Add(Container.Payload);
-        Container.UpdateMenu();
+        Container.UpdateMenuOnDrop();
     }
-
 }

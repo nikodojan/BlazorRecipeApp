@@ -1,5 +1,55 @@
-﻿<h3>DayComponent</h3>
+﻿<div class="p-3 justify-content-start w-100">
+                    
+    <div class="row w-100">                        
+        <div class="col-12 col-md-3 justify-content-center justify-content-md-start pl-md-3">
+            <input type="text" @bind="@Day.Name" class="name-input menu-name"/>
+        </div>
+        <div class="col-12 col-md-auto">
+            <button type="button" class="day-button" @onclick="AddMeal">Add meal</button>
+            <button type="button" class="day-button" @onclick="OnDeleteDay_Click">Delete day</button>
+        </div>
+    </div>
+
+    @for (int m = 0; m < Day.Meals.Count; m++)
+    {
+        int mealIndex = m;
+        <MealComponent DayIndex="@DayIndex" 
+                       MealIndex="@mealIndex" 
+                       @key="@Container.GetElementKey()"
+                       OnMealDelete=@DeleteMeal/>
+    }
+</div>
 
 @code {
+    [CascadingParameter] MenuStateContainer Container { get; set; }
 
+    public Day Day { get; set; } = new Day();
+
+    [Parameter] public int DayIndex { get; set; }
+
+    [Parameter] public EventCallback<int> OnDayDelete { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Day = Container.Menu.Days[DayIndex];
+    }
+
+    private void AddMeal(MouseEventArgs e)
+    {
+        Meal newMeal = new Meal() {Name = "Untitled meal"};
+        Container.Menu.Days[DayIndex].Meals.Add(newMeal);
+    }
+
+    private void DeleteMeal(int mealIndex)
+    {
+        Day.Meals.RemoveAt(mealIndex);
+        StateHasChanged();
+    }
+
+    private async Task OnDeleteDay_Click(MouseEventArgs e)
+    {
+        await OnDayDelete.InvokeAsync(DayIndex);
+        StateHasChanged();
+    }
 }

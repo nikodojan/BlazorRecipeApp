@@ -6,12 +6,12 @@ namespace BlazorRecipeApp.Mm.MealPlans.Services
 {
     public class MenuFactory : IMenuFactory
     {
-        public Menu CreateMenu(string type)
+        public Menu CreateMenu(MenuType type)
         {
             return type switch
             {
-                "empty" => CreateEmptyMenu(),
-                "week" => CreateWeekMenu(),
+                MenuType.Empty => CreateEmptyMenu(),
+                MenuType.Week => CreateWeekMenu(),
                 _ => new Menu(),
             };
         }
@@ -27,7 +27,7 @@ namespace BlazorRecipeApp.Mm.MealPlans.Services
 
         public Menu CreateWeekMenu()
         {
-            Menu menu = CreateEmptyMenu();
+            Menu menu = new Menu() { Name = "Untitled menu", CreatedDateTime = DateTime.Now };
             string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
             for (int i = 0; i < 7; i++)

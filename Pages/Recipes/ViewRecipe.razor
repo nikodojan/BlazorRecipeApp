@@ -3,6 +3,15 @@
 @using BlazorRecipeApp.Mm.Recipes.Services
 @using BlazorRecipeApp.Mm.Shared.Interfaces
 @inject IRecipeService RecipeService
+@inject IMenuService MenuService
+
+
+<button type="button" @onclick="OnAddToMenuButtonClick">Add to menu</button>
+
+@if (!string.IsNullOrWhiteSpace(StatusMessage))
+{
+    <span>@StatusMessage</span>
+}
 
 <RecipeComponent Recipe="@Recipe"></RecipeComponent>
 
@@ -11,6 +20,22 @@
     public int RecipeId { get; set; }
 
     public Recipe Recipe { get; set; } = new Recipe();
+
+    public string StatusMessage { get; set; } = "";
+
+    private async Task OnAddToMenuButtonClick()
+    {
+        try
+        {
+            await MenuService.AddDish(RecipeId);
+            StatusMessage = "Recipe was added.";
+        }
+        catch (Exception e)
+        {
+            StatusMessage = "Recipe could not be added.";
+        }
+
+    }
 
     protected override async Task OnParametersSetAsync()
     {
